@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongmeng.mapper.DocsMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongmeng.pojo.Docs" >
+    <id column="did" property="did" jdbcType="INTEGER" />
+    <result column="dtitle" property="dtitle" jdbcType="VARCHAR" />
+    <result column="dtime" property="dtime" jdbcType="TIMESTAMP" />
+    <result column="dimg" property="dimg" jdbcType="VARCHAR" />
+    <result column="dinfo" property="dinfo" jdbcType="VARCHAR" />
+    <result column="ddatil" property="ddatil" jdbcType="VARCHAR" />
+    <result column="dtype" property="dtype" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    did, dtitle, dtime, dimg, dinfo, ddatil, dtype
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongmeng.pojo.DocsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from docs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from docs
+    where did = #{did,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from docs
+    where did = #{did,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongmeng.pojo.DocsExample" >
+    delete from docs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongmeng.pojo.Docs" >
+    insert into docs (did, dtitle, dtime, 
+      dimg, dinfo, ddatil, 
+      dtype)
+    values (#{did,jdbcType=INTEGER}, #{dtitle,jdbcType=VARCHAR}, #{dtime,jdbcType=TIMESTAMP}, 
+      #{dimg,jdbcType=VARCHAR}, #{dinfo,jdbcType=VARCHAR}, #{ddatil,jdbcType=VARCHAR}, 
+      #{dtype,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongmeng.pojo.Docs" >
+    insert into docs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="did != null" >
+        did,
+      </if>
+      <if test="dtitle != null" >
+        dtitle,
+      </if>
+      <if test="dtime != null" >
+        dtime,
+      </if>
+      <if test="dimg != null" >
+        dimg,
+      </if>
+      <if test="dinfo != null" >
+        dinfo,
+      </if>
+      <if test="ddatil != null" >
+        ddatil,
+      </if>
+      <if test="dtype != null" >
+        dtype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="did != null" >
+        #{did,jdbcType=INTEGER},
+      </if>
+      <if test="dtitle != null" >
+        #{dtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="dtime != null" >
+        #{dtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dimg != null" >
+        #{dimg,jdbcType=VARCHAR},
+      </if>
+      <if test="dinfo != null" >
+        #{dinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="ddatil != null" >
+        #{ddatil,jdbcType=VARCHAR},
+      </if>
+      <if test="dtype != null" >
+        #{dtype,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongmeng.pojo.DocsExample" resultType="java.lang.Integer" >
+    select count(*) from docs
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update docs
+    <set >
+      <if test="record.did != null" >
+        did = #{record.did,jdbcType=INTEGER},
+      </if>
+      <if test="record.dtitle != null" >
+        dtitle = #{record.dtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dtime != null" >
+        dtime = #{record.dtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dimg != null" >
+        dimg = #{record.dimg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dinfo != null" >
+        dinfo = #{record.dinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ddatil != null" >
+        ddatil = #{record.ddatil,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dtype != null" >
+        dtype = #{record.dtype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update docs
+    set did = #{record.did,jdbcType=INTEGER},
+      dtitle = #{record.dtitle,jdbcType=VARCHAR},
+      dtime = #{record.dtime,jdbcType=TIMESTAMP},
+      dimg = #{record.dimg,jdbcType=VARCHAR},
+      dinfo = #{record.dinfo,jdbcType=VARCHAR},
+      ddatil = #{record.ddatil,jdbcType=VARCHAR},
+      dtype = #{record.dtype,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongmeng.pojo.Docs" >
+    update docs
+    <set >
+      <if test="dtitle != null" >
+        dtitle = #{dtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="dtime != null" >
+        dtime = #{dtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dimg != null" >
+        dimg = #{dimg,jdbcType=VARCHAR},
+      </if>
+      <if test="dinfo != null" >
+        dinfo = #{dinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="ddatil != null" >
+        ddatil = #{ddatil,jdbcType=VARCHAR},
+      </if>
+      <if test="dtype != null" >
+        dtype = #{dtype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where did = #{did,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongmeng.pojo.Docs" >
+    update docs
+    set dtitle = #{dtitle,jdbcType=VARCHAR},
+      dtime = #{dtime,jdbcType=TIMESTAMP},
+      dimg = #{dimg,jdbcType=VARCHAR},
+      dinfo = #{dinfo,jdbcType=VARCHAR},
+      ddatil = #{ddatil,jdbcType=VARCHAR},
+      dtype = #{dtype,jdbcType=VARCHAR}
+    where did = #{did,jdbcType=INTEGER}
+  </update>
+</mapper>

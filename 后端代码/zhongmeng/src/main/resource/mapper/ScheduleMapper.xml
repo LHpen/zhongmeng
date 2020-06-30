@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongmeng.mapper.ScheduleMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongmeng.pojo.Schedule" >
+    <id column="scheduleid" property="scheduleid" jdbcType="INTEGER" />
+    <result column="day" property="day" jdbcType="DATE" />
+    <result column="classid" property="classid" jdbcType="INTEGER" />
+    <result column="classname" property="classname" jdbcType="VARCHAR" />
+    <result column="addressid" property="addressid" jdbcType="INTEGER" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="item" property="item" jdbcType="VARCHAR" />
+    <result column="updatedate" property="updatedate" jdbcType="TIMESTAMP" />
+    <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    scheduleid, day, classid, classname, addressid, address, item, updatedate, createdate
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongmeng.pojo.ScheduleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from schedule
+    where scheduleid = #{scheduleid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from schedule
+    where scheduleid = #{scheduleid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongmeng.pojo.ScheduleExample" >
+    delete from schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongmeng.pojo.Schedule" >
+    insert into schedule (scheduleid, day, classid, 
+      classname, addressid, address, 
+      item, updatedate, createdate
+      )
+    values (#{scheduleid,jdbcType=INTEGER}, #{day,jdbcType=DATE}, #{classid,jdbcType=INTEGER}, 
+      #{classname,jdbcType=VARCHAR}, #{addressid,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
+      #{item,jdbcType=VARCHAR}, #{updatedate,jdbcType=TIMESTAMP}, #{createdate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongmeng.pojo.Schedule" >
+    insert into schedule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="scheduleid != null" >
+        scheduleid,
+      </if>
+      <if test="day != null" >
+        day,
+      </if>
+      <if test="classid != null" >
+        classid,
+      </if>
+      <if test="classname != null" >
+        classname,
+      </if>
+      <if test="addressid != null" >
+        addressid,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="item != null" >
+        item,
+      </if>
+      <if test="updatedate != null" >
+        updatedate,
+      </if>
+      <if test="createdate != null" >
+        createdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="scheduleid != null" >
+        #{scheduleid,jdbcType=INTEGER},
+      </if>
+      <if test="day != null" >
+        #{day,jdbcType=DATE},
+      </if>
+      <if test="classid != null" >
+        #{classid,jdbcType=INTEGER},
+      </if>
+      <if test="classname != null" >
+        #{classname,jdbcType=VARCHAR},
+      </if>
+      <if test="addressid != null" >
+        #{addressid,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="item != null" >
+        #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedate != null" >
+        #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongmeng.pojo.ScheduleExample" resultType="java.lang.Integer" >
+    select count(*) from schedule
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update schedule
+    <set >
+      <if test="record.scheduleid != null" >
+        scheduleid = #{record.scheduleid,jdbcType=INTEGER},
+      </if>
+      <if test="record.day != null" >
+        day = #{record.day,jdbcType=DATE},
+      </if>
+      <if test="record.classid != null" >
+        classid = #{record.classid,jdbcType=INTEGER},
+      </if>
+      <if test="record.classname != null" >
+        classname = #{record.classname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressid != null" >
+        addressid = #{record.addressid,jdbcType=INTEGER},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.item != null" >
+        item = #{record.item,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatedate != null" >
+        updatedate = #{record.updatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdate != null" >
+        createdate = #{record.createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update schedule
+    set scheduleid = #{record.scheduleid,jdbcType=INTEGER},
+      day = #{record.day,jdbcType=DATE},
+      classid = #{record.classid,jdbcType=INTEGER},
+      classname = #{record.classname,jdbcType=VARCHAR},
+      addressid = #{record.addressid,jdbcType=INTEGER},
+      address = #{record.address,jdbcType=VARCHAR},
+      item = #{record.item,jdbcType=VARCHAR},
+      updatedate = #{record.updatedate,jdbcType=TIMESTAMP},
+      createdate = #{record.createdate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongmeng.pojo.Schedule" >
+    update schedule
+    <set >
+      <if test="day != null" >
+        day = #{day,jdbcType=DATE},
+      </if>
+      <if test="classid != null" >
+        classid = #{classid,jdbcType=INTEGER},
+      </if>
+      <if test="classname != null" >
+        classname = #{classname,jdbcType=VARCHAR},
+      </if>
+      <if test="addressid != null" >
+        addressid = #{addressid,jdbcType=INTEGER},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="item != null" >
+        item = #{item,jdbcType=VARCHAR},
+      </if>
+      <if test="updatedate != null" >
+        updatedate = #{updatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdate != null" >
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where scheduleid = #{scheduleid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongmeng.pojo.Schedule" >
+    update schedule
+    set day = #{day,jdbcType=DATE},
+      classid = #{classid,jdbcType=INTEGER},
+      classname = #{classname,jdbcType=VARCHAR},
+      addressid = #{addressid,jdbcType=INTEGER},
+      address = #{address,jdbcType=VARCHAR},
+      item = #{item,jdbcType=VARCHAR},
+      updatedate = #{updatedate,jdbcType=TIMESTAMP},
+      createdate = #{createdate,jdbcType=TIMESTAMP}
+    where scheduleid = #{scheduleid,jdbcType=INTEGER}
+  </update>
+
+
+  <resultMap id="ResultMap" type="com.zhongmeng.vo.ScheduleVo" >
+    <result column="day" property="day" jdbcType="DATE" />
+    <collection  property="list" ofType="com.zhongmeng.pojo.Schedule">
+      <result column="classid" property="classid" jdbcType="INTEGER" />
+      <result column="classname" property="classname" jdbcType="VARCHAR" />
+      <result column="addressid" property="addressid" jdbcType="INTEGER" />
+      <result column="address" property="address" jdbcType="VARCHAR" />
+      <result column="item" property="item" jdbcType="VARCHAR" />
+      <result column="updatedate" property="updatedate" jdbcType="TIMESTAMP" />
+      <result column="createdate" property="createdate" jdbcType="TIMESTAMP" />
+    </collection>
+  </resultMap>
+
+  <select id="selectByDay" resultMap="ResultMap" parameterType="map">
+    SELECT
+    s1.day,
+    s2.classid,
+    s2.classname,
+    s2.addressid,
+    s2.address,
+    s2.item,
+    s2.updatedate,
+    s2.createdate
+     FROM `schedule` as s1
+          left JOIN `schedule` as s2 on s1.scheduleid = s2.scheduleid
+           WHERE ( s2.addressid = #{addressid} and s1.day between #{day} and #{laterDate} );
+
+  </select>
+</mapper>

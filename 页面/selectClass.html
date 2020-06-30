@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>选课表</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<script src="vue/vue.js"></script>
+		<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="select2/select2.css">
+		<script src="jquery/jquery-3.0.0.js"></script>
+		<script src="bootstrap-3.3.7/dist/js/bootstrap.js"></script>
+		<script src="vue/vue-resource-1.3.4.js"></script>
+		<script src="js/context.js"></script>
+		<script src="select2/select2.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			//页面加载完成后初始化select2控件
+			$(function() {
+				$("#area").select2();
+				$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+				$("#area1").select2();
+				$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+				$("#area2").select2();
+				$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+				$("#area3").select2();
+				$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+				$("#area4").select2();
+				$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+				$("#area5").select2();
+				$.fn.modal.Constructor.prototype.enforceFocus = function() {};
+			});
+				
+		</script>
+		<style>
+			.divdePageBtn {
+            float: right;
+        }
+
+        .pager {
+            float: right;
+        }
+
+        .form-control, .select2 {
+            margin-bottom: 5px;
+        }
+    </style>
+
+	</head>
+	<body>
+
+		<div class="container-fluid body-content" id="app">
+			<div class="panel panel-warning">
+				<div class="panel-heading">
+					<h3 class="panel-title">选课管理</h3>
+				</div>
+				<div class="panel-body form-inline table-responsive">
+					<label>
+						搜索：
+						<input type="text" class="form-control" style="font-size: 13px;" v-model="keywords" v-on:keyup.enter="query"
+						 placeholder="请输入亲属名">
+						<input type="text" class="form-control" style="font-size: 13px;" v-model="keywordClass" v-on:keyup.enter="query"
+						 placeholder="请输入班级名">
+					</label>
+					<button type="button" class="btn btn-warning btn-md" style="margin: 0px 5px 4px; " @click="query">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+					<input type="button" value="新建" style="float: right;" class="btn btn-warning" data-toggle="modal" data-target="#modalClassbebesAdd"
+					 @click="open();bbxlk();kbxlk()">
+					<input type="button" @click="deleteArray()" class="btn btn-warning" style="float: right; margin-right: 10px;"
+					 value="批量删除">
+				</div>
+			</div>
+
+			<table class="table table-bordered table-hover table-striped table-responsive">
+				<thead>
+					<tr>
+						<th><input type="checkbox" @click="selectAll()" id="deleteArray"></th>
+						<th>编号</th>
+						<th>班级名称</th>
+						<th>课程名称</th>
+						<th>教师姓名</th>
+						<th>亲属姓名</th>
+						<th>家长姓名</th>
+						<th>剩余课时</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr v-for="(item,i) in arrayData" :key="i">
+						<td><input type="checkbox" name="cbids" :value="item.cbid" @click="callArr"></td>
+						<td>{{ ((pageCurrent-1)*pagesize)+i+1 }}</td>
+						<td>{{ item.aClass.classname }}</td>
+						<td>{{ item.aClass.course.cname }}</td>
+						<td>{{ item.aClass.teachers.tname}}</td>
+						<td>{{ item.kinsfolk.kname }}</td>
+						<td>{{ item.kinsfolk.vip.vname }}</td>
+						<td>{{ item.remainhours }}</td>
+						<td>
+							<!-- <input type="button" name="baobao" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBebeAdd"
+                 value="宝宝" @click="loadBebeAdd(item.vid)"> -->
+							<input type="button" name="keshi" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalReviseCtime"
+							 @click="loadReviseCtime(item.cbid)" value="修改课时">
+
+							<input type="button" name="xiugai" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalUpdate"
+							 @click="update(item.cbid,item.kinsfolk.vid)" value="修改">
+
+							<input type="button" name="shangchu" class="btn btn-danger btn-sm" value="删除" @click="deleteItem(item.cbid)">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- 分页按钮 -->
+			<div class="pager" id="pager">
+				<span class="form-inline">
+					<select class="form-control" v-model="pagesize" v-on:change="showPage(1)" number>
+						<option value="8">8</option>
+						<option value="20">20</option>
+						<option value="30">30</option>
+						<option value="40">40</option>
+					</select>
+				</span>
+				<template v-for="item in pageCount+1">
+					<span v-if="item==1" class="btn btn-default" v-on:click="showPage(1)">
+						首页
+					</span>
+					<span v-if="item==1" class="btn btn-default" v-on:click="showPage(pageCurrent-1)">
+						上一页
+					</span>
+					<span v-if="item==1" class="btn btn-default active" @click="showPage(item)">
+						{{item}}
+					</span>
+					<span v-if="item==1&&item<showPagesStart-1" class="btn btn-default disabled">
+						...
+					</span>
+					<span v-if="item>1&&item<=pageCount-1&&item>=showPagesStart&&item<=showPageEnd&&item<=pageCount" class="btn btn-default"
+					 v-on:click="showPage(item)">
+						{{item}}
+					</span>
+					<span v-if="item==pageCount&&item>showPageEnd+1" class="btn btn-default disabled">
+						...
+					</span>
+					<span v-if="item==pageCount&&pageCount!=1" class="btn btn-default" v-on:click="showPage(item)">
+						{{item}}
+					</span>
+					<span v-if="item==pageCount" class="btn btn-default" v-on:click="showPage(pageCurrent+1)">
+						下一页
+					</span>
+					<span v-if="item==pageCount" class="btn btn-default" v-on:click="showPage(pageCount)">
+						尾页
+					</span>
+				</template>
+				<span class="form-inline">
+					<input class="pageIndex form-control" style="width:60px;text-align:center" type="text" v-model.number="pageNum"
+					 v-on:keyup.enter="showPage(pageNum)" />
+				</span>
+				<span>{{pageCurrent}}/{{pageCount}}</span>
+			</div>
+
+
+			<!-- 更新信息模态框 -->
+			<div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<!-- 框头 -->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								&times;
+							</button>
+							<h4 class="modal-title" id="myModalLabel">
+								修改信息
+							</h4>
+						</div>
+
+						<div class="modal-body">
+							<!-- 框体 -->
+							<form role="form" id="update">
+								<div class="form-group">
+									<input type="hidden" name="cbid" v-model="cbid">
+									<label for="area">家长名称：</label>
+									<select id="area" class="select2" style="width: 100%;" name="vid">	<option value="0" selected="selected">请选择家长</option>
+										<option :value="v.vid" v-for="(v,index) in vlist" :key="index">{{v.vname}}</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="kanme">亲属名称：</label>
+									<select class="select2" style="width: 100%;" name="kid" id="area5">
+										<option :value="k.kid" v-for="(k,index) in qslist" :key="index">{{k.kname}}</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="area1">所开班级：</label>
+									<select id="area1" class="select2" style="width: 100%;" name="classid">
+										<option :value="kb.classid" v-for="(kb,index) in clist" :key="index">{{kb.classname}}
+										</option>
+									</select>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<!-- 框尾 -->
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								关闭
+							</button>
+							<button type="button" class="btn btn-warning" v-on:click="save()">
+								提交更改
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 添加选课模态框 -->
+			<div class="modal fade" id="modalClassbebesAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+			 aria-hidden="true">
+				<div class="modal-dialog">
+					<!-- 框头 -->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								&times;
+							</button>
+							<h4 class="modal-title" id="myModalLabel3">
+								新建选课
+							</h4>
+						</div>
+						<div class="modal-body">
+							<!-- 框体 -->
+							<form role="form" method="post" id="add">
+								<div class="form-group">
+									<label for="area2">家长名称：</label>
+									<select id="area2" class="select2" style="width: 100%;" name="vid"  autocomplete="off">
+										<option value="0" selected="selected">请选择家长</option>
+										<option :value="v.vid" v-for="(v,index) in vlist" :key="index">{{v.vname}}</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="kanme">亲属名称：</label>
+									<select class="select2" style="width: 100%;" name="kid" id="area4"  autocomplete="off">
+										<option selected="selected">请选择亲属</option>
+										<option :value="k.kid" v-for="(k,index) in qslist" :key="index">{{k.kname}}</option>
+									</select>
+								</div>
+
+								<div class="form-group">
+									<label for="area3">所开班级：</label>
+									<select id="area3" class="select2" style="width: 100%" name="classid"  autocomplete="off">
+										<option value="0" selected="selected">请选择班级</option>
+										<option :value="kb.classid" v-for="(kb,index) in clist" :key="index">{{kb.classname}}
+										</option>
+									</select>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<!-- 框尾 -->
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								关闭
+							</button>
+							<button type="button" class="btn btn-warning" @click="add()">
+								添加
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- 修改剩余课时 -->
+			<div class="modal fade" id="modalReviseCtime" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<!-- 框头 -->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								&times;
+							</button>
+							<h4 class="modal-title" id="myModalLabel4">
+								修改剩余课时
+							</h4>
+						</div>
+						<div class="modal-body">
+							<!-- 框体 -->
+							<form role="form" method="post" id="revise">
+								<div class="form-group">
+									<input type="hidden" name="cbid" v-model="cbid">
+									<label for="subNum">填写已完成的课时：</label>
+									<input type="number" class="form-control" id="subNum" name="subNum" v-model="subNum" placeholder="请输入已完成课时">
+									<br>
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<!-- 框尾 -->
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								关闭
+							</button>
+							<button type="button" class="btn btn-warning" @click="revise()">
+								修改
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+
+
+		</div>
+
+		<script>
+			Vue.http.options.root = httpUrl;
+			Vue.http.options.emulateJSON = true;
+			Vue.http.interceptors.push(function(request, next) { //拦截器
+				// 跨域携带cookie
+				request.credentials = true;
+				next();
+			})
+			var vm = new Vue({
+				el: '#app',
+				data: {
+
+					//分页数
+					pageCount: 1,
+					//当前页面
+					pageCurrent: 1,
+					//分页大小
+					pagesize: 8,
+					//显示分页按钮数
+					showPages: 10,
+					//开始显示的分页按钮
+					showPagesStart: 1,
+					//结束显示的分页按钮
+					showPageEnd: 1,
+                    //输入的指定页码
+                    pageNum : 1,
+					//分页数据
+					arrayData: [],
+					keywords: '', // 搜索的关键字
+					keywordClass: '',
+					cbid: '',
+					classname: '',
+					cname: "",
+					tname: "",
+					kname: "",
+					vname: "",
+					remainhours: "",
+					subNum: 1,
+					classid: "",
+					clist: "",
+					vlist: "",
+					qslist: "",
+					vid: "",
+					msg:''
+				},
+				
+					
+				methods: {
+
+					
+					//查询
+					query: function() {
+						this.showPage(1);
+					},
+					//取消全选按钮
+					callArr: function() {
+						document.getElementById("deleteArray").checked = false;
+					},
+					//全选和反选
+					selectAll: function() {
+						if (document.getElementById("deleteArray").checked) {
+							var dom = $('.table input[name=cbids]');
+							for (var i = 0; i < dom.length; i++) {
+								dom.eq(i).prop("checked", true);
+							}
+						} else {
+							var dom = $('.table input[name=cbids]');
+							for (var i = 0; i < dom.length; i++) {
+								dom.eq(i).prop("checked", false);
+							}
+						}
+					},
+					//批量删除
+					deleteArray: function() {
+						if (confirm('确定要删除吗')) {
+							var dom = $('.table input[name=cbids]:checked');
+							var ids = [];
+							if (dom.length == 0) {
+								alert("请您先选择需要删除的选课信息");
+								return;
+							}
+							for (var i = 0; i < dom.length; i++) {
+								ids.push(dom.eq(i).val());
+							}
+							this.$http.get('classbebes/deleteList', {
+								params: {
+									cbids: ids
+								}
+							}).then(function(result) {
+								var body = result.body;
+								if (body == 1) {
+									alert("删除成功");
+									var dom = $('.table input');
+									for (var i = 0; i < dom.length; i++) {
+										dom.eq(i).prop("checked", false);
+									}
+									this.showPage(this.pageCurrent);
+								} else {
+									alert("删除失败")
+								}
+							})
+						}
+					},
+					//分页方法
+					showPage: function(pageIndex) {
+
+						if (pageIndex > 0) {
+
+                            if (pageIndex > this.pageCount) {
+                                pageIndex = this.pageCount;
+                                this.pageCurrent = this.pageCount;
+                                this.pageNum = this.pageCount;
+                            } else {
+                                this.pageCurrent = pageIndex;
+                                this.pageNum = pageIndex;
+                            }
+							//处理分页点中样式
+							var buttons = $("#pager").find("span");
+							for (var i = 0; i < buttons.length; i++) {
+								if (buttons.eq(i).html() == pageIndex) {
+									buttons.eq(i).addClass("active");
+								} else {
+									buttons.eq(i).removeClass("active");
+								}
+							}
+							this.pageCurrent = pageIndex
+							this.$http.get('classbebes/query', {
+								params: {
+									"pageNum": pageIndex,
+									"pageSize": this.pagesize,
+									"kname": this.keywords,
+									"classname": this.keywordClass,
+								}
+							}).then(function(result) {
+								var msg = result.body;
+								this.arrayData = msg.list;
+								this.pageCount = msg.pages;
+								this.showPageEnd = msg.lastPage;
+							})
+
+
+							//计算分页按钮数据
+							if (this.pageCount > this.showPages) {
+								if (pageIndex <= this.showPages / 2) { //pageIndex<=5
+									this.showPagesStart = 1;
+
+								} else if (pageIndex >= this.pageCount - (this.showPages - 3) / 2) { //pageIndex>=9
+									this.showPagesStart = this.pageCount - this.showPages + 2; //1
+
+								} else {
+									this.showPagesStart = pageIndex - (this.showPages - 3) / 2;
+
+								}
+							}
+
+						}
+
+					},
+
+					//加载数据
+					update: function(cbid,vid) {
+						
+						this.$http.get('kinsfolk/ByVid',{params:{
+							"vid":vid
+						}
+						}).then(function(result) {
+							this.qslist = result.body;
+							
+							
+						})
+						
+						this.$http.get('classbebes/load', {
+						params: {
+							"cbid": cbid
+						}
+					}).then(function(result) {
+						var list = result.body;
+						this.cbid = list.cbid;
+						// this.classname = list.classname;
+						// this.cname = list.cname;
+						// this.tname = list.tname;
+						// this.kname = list.kname;
+						// this.vname = list.vname;
+						// this.remainhours = list.remainhours;
+						this.kid = list.kid;
+						this.classid = list.classid;
+						
+					
+						$('#area').val(vid);
+						$('#area1').val(list.classid);
+						$('#area5').val(list.kid);
+						$('#area').trigger('change');
+						$('#area1').trigger('change');
+						$('#area5').trigger('change');
+					})
+
+
+					},
+
+					//家长下拉框数据渲染
+					bbxlk:function() {
+						this.$http.get('vip/list').then(function(result) {
+							this.vlist = result.body;
+						})									
+					},
+
+					//亲属下拉框
+					qsxlk: function(ts) {
+						var a = ts 
+						$("#area2").on("change",function(){
+							a.msg = $("#area2").val();
+							a.$http.get('kinsfolk/ByVid',{
+								params:{
+									vid:a.msg
+								}
+							}).then(function(result) {
+								a.qslist = result.body;
+							})
+						});
+					},
+					//开班下拉框
+					kbxlk: function() {
+						this.$http.get('class/list').then(function(result) {
+							this.clist = result.body;
+						})
+					},
+
+					//删除数据
+					deleteItem: function(cbid) {
+						if (confirm('确定要删除吗')) {
+							//console.log(index, age);
+							this.$http.get('classbebes/delete', {
+								params: {
+									"cbid": cbid
+								}
+							}).then(function(result) {
+								var msg = result.body;
+								if (msg == 1) {
+									alert("删除成功！");
+									this.showPage(this.pageCurrent);
+								} else {
+									alert("删除失败！");
+								}
+							})
+						}
+					},
+
+					//保存数据
+					save: function() {
+						if (confirm("确定要修改吗")) {
+							this.$http.post('classbebes/save', $('#update').serializeObject()).then(function(result) {
+								var data = result.body;
+								if (data.status == 0) {
+									alert("修改成功");
+									$('#modalUpdate').modal('hide');
+									this.showPage(this.pageCurrent);
+								} else {
+									alert(data.msg);
+								}
+							});
+
+						}
+					},
+
+					loadReviseCtime: function(cbid) {
+						this.cbid = cbid;
+					},
+					//修改剩余课时
+					revise: function() {
+
+						this.$http.post('classbebes/update', {
+							"cbid": this.cbid,
+							"subNum": this.subNum
+						}).then(function(result) {
+							var msg = result.bodyText;
+							console.log(msg);
+							if (msg === "001") {
+								alert("修改成功");
+								$('#modalReviseCtime').modal('hide');
+								this.showPage(this.pageCurrent);
+							} else if (msg === "000") {
+								alert("修改失败");
+							} else if (msg === "002") {
+								alert("剩余课时不足");
+							} else {
+
+							}
+
+						});
+
+					},
+					//打开时清除输入框内容
+					open: function() {
+						if (this.keywords !== '' || this.keywordClass !== '') {
+							this.keywords = '';
+							this.keywordClass = '';
+							this.showPage(this.pageCurrent);
+						}
+					},
+					//添加数据
+					add: function() {
+						if ($('#area2').val() == 0) {
+							alert("请选择家长");
+							return;
+						}
+						if ($('#area3').val() == 0) {
+							alert("请选择班级");
+							return;
+						}
+						if ($('#area4').val() == 0) {
+							alert("请选择亲属");
+							return;
+						}
+						this.$http.post('classbebes/add', $("#add").serializeObject()).then(function(result) {
+							var data = result.body;
+							if (data.status == 0) {
+								alert("添加成功");
+								$('#modalClassbebesAdd').modal('hide');
+								$('#area2').val(0);
+								$('#area3').val(0);
+								$('#area4').val(0);
+								$('#area2').trigger('change');
+								$('#area3').trigger('change');
+								$('#area4').trigger('change');
+								this.showPage(this.pageCount);
+							} else {
+								alert(data.msg);
+							}
+						})
+					},
+				},
+			    created:function() {
+					this.showPage(1);
+					this.bbxlk();
+					this.kbxlk();
+			   },
+			   mounted:function(){
+				   this.qsxlk(this)
+			   }
+			});
+			//将序列化数据格式化
+			$.fn.serializeObject = function() {
+				var o = {};
+				var a = this.serializeArray();
+				$.each(a, function() {
+					if (o[this.name] !== undefined) {
+						if (!o[this.name].push) {
+							o[this.name] = [o[this.name]];
+						}
+						o[this.name].push(this.value || '');
+					} else {
+						o[this.name] = this.value || '';
+					}
+				});
+				return o;
+			};
+			
+		</script>
+
+
+	</body>
+</html>

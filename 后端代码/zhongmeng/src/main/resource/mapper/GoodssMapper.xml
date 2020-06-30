@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongmeng.mapper.GoodssMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongmeng.pojo.Goodss" >
+    <id column="gid" property="gid" jdbcType="INTEGER" />
+    <result column="gname" property="gname" jdbcType="VARCHAR" />
+    <result column="gprice1" property="gprice1" jdbcType="DECIMAL" />
+    <result column="gprice2" property="gprice2" jdbcType="DECIMAL" />
+    <result column="gprice3" property="gprice3" jdbcType="DECIMAL" />
+    <result column="gprice4" property="gprice4" jdbcType="DECIMAL" />
+    <result column="gdatil" property="gdatil" jdbcType="VARCHAR" />
+    <result column="gtype" property="gtype" jdbcType="VARCHAR" />
+    <result column="gspec" property="gspec" jdbcType="VARCHAR" />
+    <result column="gnumber" property="gnumber" jdbcType="INTEGER" />
+    <result column="gimg" property="gimg" jdbcType="VARCHAR" />
+    <result column="gsnumber" property="gsnumber" jdbcType="INTEGER" />
+    <result column="gtime" property="gtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    gid, gname, gprice1, gprice2, gprice3, gprice4, gdatil, gtype, gspec, gnumber, gimg, 
+    gsnumber, gtime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongmeng.pojo.GoodssExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from goodss
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from goodss
+    where gid = #{gid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from goodss
+    where gid = #{gid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongmeng.pojo.GoodssExample" >
+    delete from goodss
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongmeng.pojo.Goodss" >
+    insert into goodss (gid, gname, gprice1, 
+      gprice2, gprice3, gprice4, 
+      gdatil, gtype, gspec, 
+      gnumber, gimg, gsnumber, 
+      gtime)
+    values (#{gid,jdbcType=INTEGER}, #{gname,jdbcType=VARCHAR}, #{gprice1,jdbcType=DECIMAL}, 
+      #{gprice2,jdbcType=DECIMAL}, #{gprice3,jdbcType=DECIMAL}, #{gprice4,jdbcType=DECIMAL}, 
+      #{gdatil,jdbcType=VARCHAR}, #{gtype,jdbcType=VARCHAR}, #{gspec,jdbcType=VARCHAR}, 
+      #{gnumber,jdbcType=INTEGER}, #{gimg,jdbcType=VARCHAR}, #{gsnumber,jdbcType=INTEGER}, 
+      #{gtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongmeng.pojo.Goodss" >
+    insert into goodss
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        gid,
+      </if>
+      <if test="gname != null" >
+        gname,
+      </if>
+      <if test="gprice1 != null" >
+        gprice1,
+      </if>
+      <if test="gprice2 != null" >
+        gprice2,
+      </if>
+      <if test="gprice3 != null" >
+        gprice3,
+      </if>
+      <if test="gprice4 != null" >
+        gprice4,
+      </if>
+      <if test="gdatil != null" >
+        gdatil,
+      </if>
+      <if test="gtype != null" >
+        gtype,
+      </if>
+      <if test="gspec != null" >
+        gspec,
+      </if>
+      <if test="gnumber != null" >
+        gnumber,
+      </if>
+      <if test="gimg != null" >
+        gimg,
+      </if>
+      <if test="gsnumber != null" >
+        gsnumber,
+      </if>
+      <if test="gtime != null" >
+        gtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="gname != null" >
+        #{gname,jdbcType=VARCHAR},
+      </if>
+      <if test="gprice1 != null" >
+        #{gprice1,jdbcType=DECIMAL},
+      </if>
+      <if test="gprice2 != null" >
+        #{gprice2,jdbcType=DECIMAL},
+      </if>
+      <if test="gprice3 != null" >
+        #{gprice3,jdbcType=DECIMAL},
+      </if>
+      <if test="gprice4 != null" >
+        #{gprice4,jdbcType=DECIMAL},
+      </if>
+      <if test="gdatil != null" >
+        #{gdatil,jdbcType=VARCHAR},
+      </if>
+      <if test="gtype != null" >
+        #{gtype,jdbcType=VARCHAR},
+      </if>
+      <if test="gspec != null" >
+        #{gspec,jdbcType=VARCHAR},
+      </if>
+      <if test="gnumber != null" >
+        #{gnumber,jdbcType=INTEGER},
+      </if>
+      <if test="gimg != null" >
+        #{gimg,jdbcType=VARCHAR},
+      </if>
+      <if test="gsnumber != null" >
+        #{gsnumber,jdbcType=INTEGER},
+      </if>
+      <if test="gtime != null" >
+        #{gtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongmeng.pojo.GoodssExample" resultType="java.lang.Integer" >
+    select count(*) from goodss
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update goodss
+    <set >
+      <if test="record.gid != null" >
+        gid = #{record.gid,jdbcType=INTEGER},
+      </if>
+      <if test="record.gname != null" >
+        gname = #{record.gname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gprice1 != null" >
+        gprice1 = #{record.gprice1,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gprice2 != null" >
+        gprice2 = #{record.gprice2,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gprice3 != null" >
+        gprice3 = #{record.gprice3,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gprice4 != null" >
+        gprice4 = #{record.gprice4,jdbcType=DECIMAL},
+      </if>
+      <if test="record.gdatil != null" >
+        gdatil = #{record.gdatil,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gtype != null" >
+        gtype = #{record.gtype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gspec != null" >
+        gspec = #{record.gspec,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gnumber != null" >
+        gnumber = #{record.gnumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.gimg != null" >
+        gimg = #{record.gimg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gsnumber != null" >
+        gsnumber = #{record.gsnumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.gtime != null" >
+        gtime = #{record.gtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update goodss
+    set gid = #{record.gid,jdbcType=INTEGER},
+      gname = #{record.gname,jdbcType=VARCHAR},
+      gprice1 = #{record.gprice1,jdbcType=DECIMAL},
+      gprice2 = #{record.gprice2,jdbcType=DECIMAL},
+      gprice3 = #{record.gprice3,jdbcType=DECIMAL},
+      gprice4 = #{record.gprice4,jdbcType=DECIMAL},
+      gdatil = #{record.gdatil,jdbcType=VARCHAR},
+      gtype = #{record.gtype,jdbcType=VARCHAR},
+      gspec = #{record.gspec,jdbcType=VARCHAR},
+      gnumber = #{record.gnumber,jdbcType=INTEGER},
+      gimg = #{record.gimg,jdbcType=VARCHAR},
+      gsnumber = #{record.gsnumber,jdbcType=INTEGER},
+      gtime = #{record.gtime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongmeng.pojo.Goodss" >
+    update goodss
+    <set >
+      <if test="gname != null" >
+        gname = #{gname,jdbcType=VARCHAR},
+      </if>
+      <if test="gprice1 != null" >
+        gprice1 = #{gprice1,jdbcType=DECIMAL},
+      </if>
+      <if test="gprice2 != null" >
+        gprice2 = #{gprice2,jdbcType=DECIMAL},
+      </if>
+      <if test="gprice3 != null" >
+        gprice3 = #{gprice3,jdbcType=DECIMAL},
+      </if>
+      <if test="gprice4 != null" >
+        gprice4 = #{gprice4,jdbcType=DECIMAL},
+      </if>
+      <if test="gdatil != null" >
+        gdatil = #{gdatil,jdbcType=VARCHAR},
+      </if>
+      <if test="gtype != null" >
+        gtype = #{gtype,jdbcType=VARCHAR},
+      </if>
+      <if test="gspec != null" >
+        gspec = #{gspec,jdbcType=VARCHAR},
+      </if>
+      <if test="gnumber != null" >
+        gnumber = #{gnumber,jdbcType=INTEGER},
+      </if>
+      <if test="gimg != null" >
+        gimg = #{gimg,jdbcType=VARCHAR},
+      </if>
+      <if test="gsnumber != null" >
+        gsnumber = #{gsnumber,jdbcType=INTEGER},
+      </if>
+      <if test="gtime != null" >
+        gtime = #{gtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where gid = #{gid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongmeng.pojo.Goodss" >
+    update goodss
+    set gname = #{gname,jdbcType=VARCHAR},
+      gprice1 = #{gprice1,jdbcType=DECIMAL},
+      gprice2 = #{gprice2,jdbcType=DECIMAL},
+      gprice3 = #{gprice3,jdbcType=DECIMAL},
+      gprice4 = #{gprice4,jdbcType=DECIMAL},
+      gdatil = #{gdatil,jdbcType=VARCHAR},
+      gtype = #{gtype,jdbcType=VARCHAR},
+      gspec = #{gspec,jdbcType=VARCHAR},
+      gnumber = #{gnumber,jdbcType=INTEGER},
+      gimg = #{gimg,jdbcType=VARCHAR},
+      gsnumber = #{gsnumber,jdbcType=INTEGER},
+      gtime = #{gtime,jdbcType=TIMESTAMP}
+    where gid = #{gid,jdbcType=INTEGER}
+  </update>
+</mapper>

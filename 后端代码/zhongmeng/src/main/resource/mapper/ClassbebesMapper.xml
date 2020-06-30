@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhongmeng.mapper.ClassbebesMapper">
+  <resultMap id="BaseResultMap" type="com.zhongmeng.pojo.Classbebes">
+    <id column="cbid" jdbcType="INTEGER" property="cbid" />
+    <result column="classid" jdbcType="INTEGER" property="classid" />
+    <result column="kid" jdbcType="INTEGER" property="kid" />
+    <result column="remainhours" jdbcType="INTEGER" property="remainhours" />
+  </resultMap>
+
+
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cbid, classid, kid, remainhours
+  </sql>
+
+  <resultMap id="BaseResult" type="com.zhongmeng.pojo.Classbebes">
+    <id column="cbid" jdbcType="INTEGER" property="cbid" />
+    <result column="classid" jdbcType="INTEGER" property="classid" />
+    <result column="kid" jdbcType="INTEGER" property="kid" />
+    <result column="remainhours" jdbcType="INTEGER" property="remainhours" />
+    <association property="kinsfolk" javaType="com.zhongmeng.pojo.Kinsfolk">
+      <id property="kid" column="kid"/>
+      <result property="kname" column="kname"/>
+      <result property="birthday" column="birthday"/>
+      <result property="ksex" column="ksex"/>
+      <result property="ktype" column="ktype"/>
+      <result property="vid" column="vid"/>
+      <association property="vip" javaType="com.zhongmeng.pojo.Vip">
+        <result property="vid" column="vid"/>
+        <result property="vname" column="vname"/>
+      </association>
+    </association>
+    <association property="aClass" javaType="com.zhongmeng.pojo.Class">
+      <id property="classid" column="classid"/>
+      <result property="classname" column="classname"/>
+      <association property="teachers" javaType="com.zhongmeng.pojo.Teachers">
+        <id property="tid" column="tid"/>
+        <result property="tname" column="tname"/>
+      </association>
+      <association property="course" javaType="com.zhongmeng.pojo.Course">
+        <id property="courseid" column="courseid"/>
+        <result property="cname" column="cname"/>
+      </association>
+    </association>
+  </resultMap>
+
+  <select id="selectByExample" parameterType="com.zhongmeng.pojo.ClassbebesExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from classbebes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from classbebes
+    where cbid = #{cbid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from classbebes
+    where cbid = #{cbid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongmeng.pojo.ClassbebesExample">
+    delete from classbebes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongmeng.pojo.Classbebes">
+    insert into classbebes (cbid, classid, kid, 
+      remainhours)
+    values (#{cbid,jdbcType=INTEGER}, #{classid,jdbcType=INTEGER}, #{kid,jdbcType=INTEGER}, 
+      #{remainhours,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongmeng.pojo.Classbebes">
+    insert into classbebes
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cbid != null">
+        cbid,
+      </if>
+      <if test="classid != null">
+        classid,
+      </if>
+      <if test="kid != null">
+        kid,
+      </if>
+      <if test="remainhours != null">
+        remainhours,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cbid != null">
+        #{cbid,jdbcType=INTEGER},
+      </if>
+      <if test="classid != null">
+        #{classid,jdbcType=INTEGER},
+      </if>
+      <if test="kid != null">
+        #{kid,jdbcType=INTEGER},
+      </if>
+      <if test="remainhours != null">
+        #{remainhours,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongmeng.pojo.ClassbebesExample" resultType="java.lang.Long">
+    select count(*) from classbebes
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update classbebes
+    <set>
+      <if test="record.cbid != null">
+        cbid = #{record.cbid,jdbcType=INTEGER},
+      </if>
+      <if test="record.classid != null">
+        classid = #{record.classid,jdbcType=INTEGER},
+      </if>
+      <if test="record.kid != null">
+        kid = #{record.kid,jdbcType=INTEGER},
+      </if>
+      <if test="record.remainhours != null">
+        remainhours = #{record.remainhours,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update classbebes
+    set cbid = #{record.cbid,jdbcType=INTEGER},
+      classid = #{record.classid,jdbcType=INTEGER},
+      kid = #{record.kid,jdbcType=INTEGER},
+      remainhours = #{record.remainhours,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongmeng.pojo.Classbebes">
+    update classbebes
+    <set>
+      <if test="classid != null">
+        classid = #{classid,jdbcType=INTEGER},
+      </if>
+      <if test="kid != null">
+        kid = #{kid,jdbcType=INTEGER},
+      </if>
+      <if test="remainhours != null">
+        remainhours = #{remainhours,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cbid = #{cbid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongmeng.pojo.Classbebes">
+    update classbebes
+    set classid = #{classid,jdbcType=INTEGER},
+      kid = #{kid,jdbcType=INTEGER},
+      remainhours = #{remainhours,jdbcType=INTEGER}
+    where cbid = #{cbid,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="SelectThreeTable" parameterType="com.zhongmeng.pojo.Classbebes" resultMap="BaseResult">
+    select
+    classbebes.cbid,class.classname,course.cname,
+    teachers.tname,
+    kinsfolk.kname,vip.vname,classbebes.remainhours,
+    vip.vid
+    from classbebes,class,kinsfolk,vip,teachers,course
+    where
+    classbebes.classid=class.classid and classbebes.kid=kinsfolk.kid and kinsfolk.vid=vip.vid
+    and class.courseid=course.courseid and class.tid=teachers.tid
+    <if test="kname != '' ">
+      and kinsfolk.kname like "%"#{kname}"%"
+    </if>
+    <if test="classname != '' ">
+      and class.classname like "%"#{classname}"%"
+    </if>
+    order by CONVERT(class.classname USING gbk)
+  </select>
+  <select id="findKinsfolk"  resultMap="BaseResultMap">
+    select * from classbebes where vname=#{vname}
+  </select>
+
+  <select id="checkKinsfolk" resultType="Integer" parameterType="com.zhongmeng.pojo.Classbebes">
+    select count(1) from classbebes
+    where kid = #{kid} and classid = #{classid}
+  </select>
+</mapper>

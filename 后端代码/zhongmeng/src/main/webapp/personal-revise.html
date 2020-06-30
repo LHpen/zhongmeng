@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- <meta name="description" content="" />
+		<meta name="author" content="" /> -->
+		<title>修改个人信息 | 中梦社区</title>
+		<link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css">
+		<link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="assets/css/neon-core.css">
+		<link rel="stylesheet" href="assets/css/neon-theme.css">
+		<link rel="stylesheet" href="assets/css/neon-forms.css">
+		<script type="text/javascript" src="vue/vue.js"></script>
+		<script type="text/javascript" src="vue/vue-resource-1.3.4.js"></script>
+		<script type="text/javascript" src="vue/vue-router.js"></script>
+		
+		<script type="text/javascript" src="js/context.js"></script>
+		<script src="jquery/jquery-3.0.0.js"></script>
+		<script type="text/javascript" src="bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+
+		<style type="text/css">
+			.modal-backdrop {
+				z-index: 0;
+			}
+		</style>
+		<script src="assets/js/jquery-1.11.0.min.js"></script>
+	</head>
+	<body class="page-body  page-fade" data-url="http://neon.dev">
+		<div class="page-container">
+			<div class="sidebar-menu">
+				<header class="logo-env">
+					<!-- logo -->
+					<div class="logo">
+						<a href="#">
+							<span style="font-size: 22px;color: white;">个人中心</span>
+						</a>
+					</div>
+					<!-- logo collapse icon -->
+					<div class="sidebar-collapse">
+						<a href="#" class="sidebar-collapse-icon with-animation">
+							<i class="entypo-menu"></i>
+						</a>
+					</div>
+					<div class="sidebar-mobile-menu visible-xs">
+						<a href="#" class="with-animation">
+							<!-- add class "with-animation" to support animation -->
+							<i class="entypo-menu"></i>
+						</a>
+					</div>
+				</header>
+
+				<ul id="main-menu" class="">
+				<!-- 	<li id="search">
+						<form method="get" action="">
+							<input type="text" name="q" class="search-input" placeholder="搜索..." />
+							<button type="submit">
+								<i class="entypo-search"></i>
+							</button>
+						</form>
+					</li> -->
+
+					<li class="active opened active">
+						<!-- <a href="#" target="iframe_ceshi">
+							<i class="entypo-gauge"></i>
+							<span>消息</span>
+						</a> -->
+						<ul>
+							<li>
+								<a href="xs.html" target="iframe_ceshi">
+									<i class="entypo-layout"></i>
+									<span>我的消息</span>
+								</a>
+							<!-- 	<ul>
+									<li>
+										<a href="xs.html" target="iframe_ceshi">
+											<span>个人设置</span>
+										</a>
+									</li>
+									<li>
+										<a href="managers.html" target="iframe_ceshi">
+											<span>管理员</span>
+										</a>
+									</li>
+
+								</ul> -->
+							</li>
+							<li>
+								<a href="vip.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>我的课程</span>
+								</a>
+							</li>
+							<li>
+								<a href="bebe.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>我的活动</span>
+								</a>
+							</li>
+							<li>
+								<a href="bebe.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>我的开班</span>
+								</a>
+							</li>
+							<li>
+								<a href="bebe.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>我的获奖通知</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				</li>
+				</ul>
+</div>
+	
+	
+    <div id="app" class="modal-body">
+    	<div class="panel panel-invert">
+				<div class="panel-heading">
+					<h3 class="panel-title">个人信息</h3>
+				</div>
+				<div class="panel-body form-inline table-responsive">
+					
+					<input type="button" value="修改完成" style="float: right;" class="btn btn-black" data-toggle="modal"  @click="save()">
+				</div>
+			</div>
+        <!-- 框体 -->
+        <form class="form-horizontal" role="form" method="post" id="update">
+        	<input type="hidden" name="vid" value="1">
+            <div class="form-group"  >
+                <label for="vloginname" class="col-sm-2 control-label">登录名：</label>
+                <div class="col-sm-10">
+                <input type="text" class="form-control" id="vloginname" v-model="vloginname" placeholder="请输入登录名" ></div>
+            </div>
+            <div class="form-group">
+                
+                <label for="code" class="col-sm-2 control-label">身份证号：</label>
+                <div class="col-sm-10">
+                <input type="number" min="0" class="form-control" id="code" v-model="code" placeholder="请输入身份证号" ></div>
+            </div>
+            <div class="form-group">
+                
+                <label for="vpw" class="col-sm-2 control-label">密码：</label>
+                <div class="col-sm-10">
+                <input type="number" class="form-control" id="vpw" v-model="vpw" placeholder="请输入密码" ></div>
+            </div>
+            <div class="form-group">
+                
+                <label for="vname" class="col-sm-2 control-label">姓名：</label>
+                <div class="col-sm-10">
+                <input type="number" class="form-control" id="vname" v-model="vname" placeholder="请输入姓名" ></div>
+            </div>
+            <div class="form-group"  >
+                <label for="viptype" class="col-sm-2 control-label">会员类型：</label>
+                <div class="col-sm-10">
+                	<select class="form-control" v-model="viptype" name="viptype" id="viptype">
+                        <option value="" selected="selected">请选择通知类型</option>
+                        <option value="普通会员">普通会员</option>
+                        <option value="管理员">管理员</option>
+                    </select>
+        </div>
+            </div>
+            <div class="form-group">
+                
+                <label for="tel" class="col-sm-2 control-label">电话：</label>
+                <div class="col-sm-10">
+                <input type="text" class="form-control" id="tel" v-model="tel" placeholder="请输入电话" ></div>
+            </div>
+            <div class="form-group">
+                
+                <label for="email" class="col-sm-2 control-label">邮箱：</label>
+                <div class="col-sm-10">
+                <input type="text" class="form-control" id="email" v-model="email" placeholder="请输入邮箱" ></div>
+            </div>
+            <div class="form-group">
+                
+                <label for="weixin1" class="col-sm-2 control-label">微信：</label>
+                <div class="col-sm-10">
+                <input type="text" class="form-control" v-model="weixin" name="weixin" placeholder="请输入微信" id="weixin1">
+            </div>
+        </div>
+            <div class="form-group">
+                
+                <label for="vage1" class="col-sm-2 control-label">年龄：</label>
+                <div class="col-sm-10">
+                <input type="number" min="0" class="form-control" v-model="vage" placeholder="请输入年龄" name="vage" id="tage1" ></div>
+            </div>
+            <div class="form-group"  >
+                <label for="vsex" class="col-sm-2 control-label">性别：</label>
+                <div class="col-sm-10">
+                <label class="radio-inline">
+                <input type="radio" value="男" id="vsex1" v-model="vsex" name="vsex" checked="checked">男
+                </label>
+                <label class="radio-inline">
+                <input type="radio" value="女" v-model="vsex" name="vsex" >女
+                </label>
+        </div>
+            </div>
+            <div class="form-group">
+                <label for="vaddress" class="col-sm-2 control-label">家庭地址：</label>
+                <div class="col-sm-10">
+                <textarea class="form-control" rows="2" v-model="vaddress" name="vaddress" id="vaddress" placeholder="请输入家庭地址"></textarea>
+                </div>
+                </div>
+            <div class="form-group">
+                
+                <label for="nickname" class="col-sm-2 control-label">微信昵称：</label>
+                <div class="col-sm-10">
+                <input type="number" class="form-control" id="nickname" v-model="nickname" placeholder="请输入微信昵称" ></div>
+            </div>
+			
+        </form>
+    </div>
+
+
+
+		</div>
+
+<script>
+			Vue.http.options.root = httpUrl; //httpUrl在context定义
+			Vue.http.options.emulateJSON = true;
+			Vue.http.interceptors.push(function(request, next) { //拦截器
+				// 跨域携带cookie
+				request.credentials = true;
+				next();
+			})
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					vid:'',
+					vloginname:'',
+					code:'',
+					vpw:'',
+					vname:'',
+					viptype:'',
+					tel:'',
+					email:'',
+					weixin:'',
+					vage:'',
+					vsex:'',
+					vaddtime:'',
+					vaddress:'',
+					vstate:'',
+					openid:'',
+					headimgurl:'',
+					nickname:''
+					
+					},
+					created: function() {
+					this.update();
+					var msg = localStorage.getItem("vip");
+					this.list(msg);
+				
+                    
+				},
+				methods: {
+					update: function (vid,vip) {
+                		this.$http.get('VipPortal/findVip', {
+                    params: {
+                        "vid": vip
+
+                    }
+                }).then(function (result) {
+                    var list = result.body;
+                    this.vid = list.vid;
+                    this.vloginname = list.vloginname;
+                    this.code = list.code;
+                    this.vpw = list.vpw;
+                    this.vname = list.vname;
+                    this.viptype = list.viptype;
+                    this.tel = list.tel;
+                    this.email = list.email;
+                    this.weixin = list.weixin;
+                    this.vage = list.vage;
+                    this.vsex = list.vsex;
+                    this.vaddtime = list.vaddtime;
+                    this.nickname = list.nickname;
+                    this.vaddress = list.vaddress;
+                   
+                });
+
+
+            },
+					save: function() {
+						if (confirm("确定要修改吗")) {
+							this.$http.post('VipPortal/updateMessage',$('#update').serializeObject()).then(function(result) {
+								var list = result.body;
+
+								if (list == 1) {
+									alert("修改成功");
+									window.location.href="personal-information.html";
+								} else {
+									alert("修改失败");
+								}
+							});
+
+						}
+					},
+
+				
+				
+			}
+		});
+			$.fn.serializeObject = function() {
+				var o = {};
+				var a = this.serializeArray();
+				$.each(a, function() {
+					if (o[this.name] !== undefined) {
+						if (!o[this.name].push) {
+							o[this.name] = [o[this.name]];
+						}
+						o[this.name].push(this.value || '');
+					} else {
+						o[this.name] = this.value || '';
+					}
+				});
+				return o;
+			};
+
+		</script>
+		<link rel="stylesheet" href="assets/js/jvectormap/jquery-jvectormap-1.2.2.css">
+		<link rel="stylesheet" href="assets/js/rickshaw/rickshaw.min.css">
+
+		<!-- Bottom Scripts -->
+		<script src="assets/js/gsap/main-gsap.js"></script>
+		<script src="assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>
+		<script src="assets/js/bootstrap.js"></script>
+		<script src="assets/js/joinable.js"></script>
+		<script src="assets/js/resizeable.js"></script>
+		<script src="assets/js/neon-api.js"></script>
+		<script src="assets/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+		<script src="assets/js/jvectormap/jquery-jvectormap-europe-merc-en.js"></script>
+		<script src="assets/js/jquery.sparkline.min.js"></script>
+		<script src="assets/js/rickshaw/vendor/d3.v3.js"></script>
+		<script src="assets/js/rickshaw/rickshaw.min.js"></script>
+		<script src="assets/js/raphael-min.js"></script>
+		<script src="assets/js/morris.min.js"></script>
+		<script src="assets/js/toastr.js"></script>
+		<script src="assets/js/neon-chat.js"></script>
+		<script src="assets/js/neon-custom.js"></script>
+		<script src="assets/js/neon-demo.js"></script>
+</body>
+</html>

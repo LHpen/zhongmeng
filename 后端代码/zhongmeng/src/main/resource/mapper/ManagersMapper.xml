@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongmeng.mapper.ManagersMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongmeng.pojo.Managers" >
+    <id column="mid" property="mid" jdbcType="INTEGER" />
+    <result column="mloginname" property="mloginname" jdbcType="VARCHAR" />
+    <result column="mpw" property="mpw" jdbcType="VARCHAR" />
+    <result column="mname" property="mname" jdbcType="VARCHAR" />
+    <result column="managetype" property="managetype" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    mid, mloginname, mpw, mname, managetype
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongmeng.pojo.ManagersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from managers
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from managers
+    where mid = #{mid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from managers
+    where mid = #{mid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongmeng.pojo.ManagersExample" >
+    delete from managers
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongmeng.pojo.Managers" >
+    insert into managers (mid, mloginname, mpw, 
+      mname, managetype)
+    values (#{mid,jdbcType=INTEGER}, #{mloginname,jdbcType=VARCHAR}, #{mpw,jdbcType=VARCHAR}, 
+      #{mname,jdbcType=VARCHAR}, #{managetype,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongmeng.pojo.Managers" >
+    insert into managers
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="mid != null" >
+        mid,
+      </if>
+      <if test="mloginname != null" >
+        mloginname,
+      </if>
+      <if test="mpw != null" >
+        mpw,
+      </if>
+      <if test="mname != null" >
+        mname,
+      </if>
+      <if test="managetype != null" >
+        managetype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="mid != null" >
+        #{mid,jdbcType=INTEGER},
+      </if>
+      <if test="mloginname != null" >
+        #{mloginname,jdbcType=VARCHAR},
+      </if>
+      <if test="mpw != null" >
+        #{mpw,jdbcType=VARCHAR},
+      </if>
+      <if test="mname != null" >
+        #{mname,jdbcType=VARCHAR},
+      </if>
+      <if test="managetype != null" >
+        #{managetype,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongmeng.pojo.ManagersExample" resultType="java.lang.Integer" >
+    select count(*) from managers
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update managers
+    <set >
+      <if test="record.mid != null" >
+        mid = #{record.mid,jdbcType=INTEGER},
+      </if>
+      <if test="record.mloginname != null" >
+        mloginname = #{record.mloginname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mpw != null" >
+        mpw = #{record.mpw,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mname != null" >
+        mname = #{record.mname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.managetype != null" >
+        managetype = #{record.managetype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update managers
+    set mid = #{record.mid,jdbcType=INTEGER},
+      mloginname = #{record.mloginname,jdbcType=VARCHAR},
+      mpw = #{record.mpw,jdbcType=VARCHAR},
+      mname = #{record.mname,jdbcType=VARCHAR},
+      managetype = #{record.managetype,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongmeng.pojo.Managers" >
+    update managers
+    <set >
+      <if test="mloginname != null" >
+        mloginname = #{mloginname,jdbcType=VARCHAR},
+      </if>
+      <if test="mpw != null" >
+        mpw = #{mpw,jdbcType=VARCHAR},
+      </if>
+      <if test="mname != null" >
+        mname = #{mname,jdbcType=VARCHAR},
+      </if>
+      <if test="managetype != null" >
+        managetype = #{managetype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where mid = #{mid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongmeng.pojo.Managers" >
+    update managers
+    set mloginname = #{mloginname,jdbcType=VARCHAR},
+      mpw = #{mpw,jdbcType=VARCHAR},
+      mname = #{mname,jdbcType=VARCHAR},
+      managetype = #{managetype,jdbcType=VARCHAR}
+    where mid = #{mid,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="toLogin" resultType="com.zhongmeng.pojo.Managers">
+    select `mid`,
+  `mloginname`,
+  `mname`,
+  `managetype` from managers where  mloginname=#{mloginname} and mpw=#{mpw};
+  </select>
+</mapper>

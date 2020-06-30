@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongmeng.mapper.OrderssMapper" >
+  <resultMap id="BaseResultMap" type="com.zhongmeng.pojo.Orderss" >
+    <id column="odid" property="odid" jdbcType="INTEGER" />
+    <result column="oid" property="oid" jdbcType="INTEGER" />
+    <result column="gid" property="gid" jdbcType="INTEGER" />
+    <result column="gnumber" property="gnumber" jdbcType="INTEGER" />
+    <result column="gprice" property="gprice" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    odid, oid, gid, gnumber, gprice
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.zhongmeng.pojo.OrderssExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from orderss
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from orderss
+    where odid = #{odid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from orderss
+    where odid = #{odid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongmeng.pojo.OrderssExample" >
+    delete from orderss
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongmeng.pojo.Orderss" >
+    insert into orderss (odid, oid, gid, 
+      gnumber, gprice)
+    values (#{odid,jdbcType=INTEGER}, #{oid,jdbcType=INTEGER}, #{gid,jdbcType=INTEGER}, 
+      #{gnumber,jdbcType=INTEGER}, #{gprice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongmeng.pojo.Orderss" >
+    insert into orderss
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="odid != null" >
+        odid,
+      </if>
+      <if test="oid != null" >
+        oid,
+      </if>
+      <if test="gid != null" >
+        gid,
+      </if>
+      <if test="gnumber != null" >
+        gnumber,
+      </if>
+      <if test="gprice != null" >
+        gprice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="odid != null" >
+        #{odid,jdbcType=INTEGER},
+      </if>
+      <if test="oid != null" >
+        #{oid,jdbcType=INTEGER},
+      </if>
+      <if test="gid != null" >
+        #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="gnumber != null" >
+        #{gnumber,jdbcType=INTEGER},
+      </if>
+      <if test="gprice != null" >
+        #{gprice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongmeng.pojo.OrderssExample" resultType="java.lang.Integer" >
+    select count(*) from orderss
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update orderss
+    <set >
+      <if test="record.odid != null" >
+        odid = #{record.odid,jdbcType=INTEGER},
+      </if>
+      <if test="record.oid != null" >
+        oid = #{record.oid,jdbcType=INTEGER},
+      </if>
+      <if test="record.gid != null" >
+        gid = #{record.gid,jdbcType=INTEGER},
+      </if>
+      <if test="record.gnumber != null" >
+        gnumber = #{record.gnumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.gprice != null" >
+        gprice = #{record.gprice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update orderss
+    set odid = #{record.odid,jdbcType=INTEGER},
+      oid = #{record.oid,jdbcType=INTEGER},
+      gid = #{record.gid,jdbcType=INTEGER},
+      gnumber = #{record.gnumber,jdbcType=INTEGER},
+      gprice = #{record.gprice,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongmeng.pojo.Orderss" >
+    update orderss
+    <set >
+      <if test="oid != null" >
+        oid = #{oid,jdbcType=INTEGER},
+      </if>
+      <if test="gid != null" >
+        gid = #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="gnumber != null" >
+        gnumber = #{gnumber,jdbcType=INTEGER},
+      </if>
+      <if test="gprice != null" >
+        gprice = #{gprice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where odid = #{odid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongmeng.pojo.Orderss" >
+    update orderss
+    set oid = #{oid,jdbcType=INTEGER},
+      gid = #{gid,jdbcType=INTEGER},
+      gnumber = #{gnumber,jdbcType=INTEGER},
+      gprice = #{gprice,jdbcType=DECIMAL}
+    where odid = #{odid,jdbcType=INTEGER}
+  </update>
+</mapper>

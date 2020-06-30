@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- <meta name="description" content="" />
+		<meta name="author" content="" /> -->
+		<title>首页 | 中梦留守社区系统</title>
+		<link rel="stylesheet" href="assets/css/font-icons/entypo/css/entypo.css">
+		<link rel="stylesheet" href="assets/css/bootstrap.css">
+		<link rel="stylesheet" href="assets/css/neon-core.css">
+		<!-- <link rel="stylesheet" href="assets/css/neon-theme.css"> -->
+		<!-- <link rel="stylesheet" href="assets/css/neon-forms.css"> -->
+		<link rel="stylesheet" href="assets/css/skins/yellow.css">
+		<script src="assets/js/jquery-1.11.0.min.js"></script>
+		<script src="js/axios.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/context.js"></script>
+	</head>
+	<body class="page-body  page-fade" data-url="http://neon.dev">
+		<div class="page-container">
+			<div class="sidebar-menu">
+				<header class="logo-env">
+					<!-- logo -->
+					<div class="logo">
+						<a href="#">
+							<span style="font-size: 22px;color: white;">中梦社区管理系统</span>
+						</a>
+					</div>
+					<!-- logo collapse icon -->
+					<div class="sidebar-collapse">
+						<a href="#" class="sidebar-collapse-icon with-animation">
+							<i class="entypo-menu"></i>
+						</a>
+					</div>
+					<div class="sidebar-mobile-menu visible-xs">
+						<a href="#" class="with-animation">
+							<!-- add class "with-animation" to support animation -->
+							<i class="entypo-menu"></i>
+						</a>
+					</div>
+				</header>
+
+				<ul id="main-menu" class="">
+					<li id="search">
+						<form method="get" action="">
+							<input type="text" name="q" class="search-input" placeholder="搜索..." />
+							<button type="submit">
+								<i class="entypo-search"></i>
+							</button>
+						</form>
+					</li>
+
+					<li class="active opened active">
+						<a href="#" target="iframe_ceshi">
+							<i class="entypo-gauge"></i>
+							<span>首页</span>
+						</a>
+						<ul>
+							<li>
+								<a href="xs.html" target="iframe_ceshi">
+									<i class="entypo-layout"></i>
+									<span>基本信息</span>
+								</a>
+								<ul>
+									<li>
+										<a href="xs.html" target="iframe_ceshi">
+											<span>个人设置</span>
+										</a>
+									</li>
+									<li>
+										<a href="managers.html" target="iframe_ceshi">
+											<span>管理员</span>
+										</a>
+									</li>
+
+								</ul>
+							</li>
+							<li>
+								<a href="vip.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>会员管理</span>
+								</a>
+							</li>
+							<li>
+								<a href="bebe.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>亲属管理</span>
+								</a>
+							</li>
+							<li>
+								<a href="teachers.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>教师管理</span>
+								</a>
+							</li>
+							<li>
+								<a href="sort.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>分类管理</span>
+								</a>
+							</li>
+							<li>
+								<a href="course.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>课程管理</span>
+								</a>
+							</li>
+							<li>
+								<a href="class.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>开班管理</span>
+								</a>
+							</li>
+							<li>
+								<a href="selectClass.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>选课管理</span>
+								</a>
+							</li>
+							<li>
+								<a href="notify.html" target="iframe_ceshi">
+									<i class="entypo-monitor"></i>
+									<span>公告管理</span>
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+
+			</div>
+			<div class="main-content">
+
+				<div class="row">
+
+					<!-- Profile Info and Notifications -->
+					<div class="col-md-6 col-sm-8 clearfix">
+
+						<ul class="user-info pull-left pull-none-xsm">
+
+							<!-- Profile Info -->
+							<li class="profile-info dropdown">
+								<!-- add class "pull-right" if you want to place this from right -->
+
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<img src="assets/images/thumb-1@2x.png" alt="" class="img-circle" width="44" />
+									管理员
+								</a>
+
+								<ul class="dropdown-menu">
+
+									<!-- Reverse Caret -->
+									<li class="caret"></li>
+
+									<!-- Profile sub-links -->
+									<li>
+										<a href="extra-timeline.html">
+											<i class="entypo-user"></i>
+											编辑个人资料
+										</a>
+									</li>
+
+									<li>
+										<a href="mailbox.html">
+											<i class="entypo-mail"></i>
+											收件箱
+										</a>
+									</li>
+
+									<li>
+										<a href="extra-calendar.html">
+											<i class="entypo-calendar"></i>
+											日历
+										</a>
+									</li>
+
+									<li>
+										<a href="#">
+											<i class="entypo-clipboard"></i>
+											任务
+										</a>
+									</li>
+								</ul>
+							</li>
+
+						</ul>
+
+						<ul class="user-info pull-left pull-right-xs pull-none-xsm">
+
+							<!-- Raw Notifications -->
+							<li class="notifications dropdown">
+
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+									<i class="entypo-attention"></i>
+									<!-- <span class="badge badge-info">6</span> -->
+								</a>
+
+							</li>
+
+							<!-- Message Notifications -->
+							<li class="notifications dropdown">
+
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+									<i class="entypo-mail"></i>
+									<span class="badge badge-secondary">10</span>
+								</a>
+
+								<ul class="dropdown-menu">
+									<li>
+										<ul class="dropdown-menu-list scroller">
+											<li class="active">
+												<a href="#">
+													<span class="image pull-right">
+														<img src="assets/images/thumb-1.png" alt="" class="img-circle" />
+													</span>
+
+													<span class="line">
+														<strong>家长</strong>
+														- 昨天
+													</span>
+
+													<span class="line desc small">
+														Thank you very much.
+													</span>
+												</a>
+											</li>
+
+											<li class="active">
+												<a href="#">
+													<span class="image pull-right">
+														<img src="assets/images/thumb-2.png" alt="" class="img-circle" />
+													</span>
+
+													<span class="line">
+														<strong>家长</strong>
+														- 2天前
+													</span>
+
+													<span class="line desc small">
+														Thank you very much.
+													</span>
+												</a>
+											</li>
+
+											<li>
+												<a href="#">
+													<span class="image pull-right">
+														<img src="assets/images/thumb-3.png" alt="" class="img-circle" />
+													</span>
+
+													<span class="line">
+														家长
+														- 一星期前
+													</span>
+
+													<span class="line desc small">
+														Thank you very much.
+													</span>
+												</a>
+											</li>
+
+											<li>
+												<a href="#">
+													<span class="image pull-right">
+														<img src="assets/images/thumb-4.png" alt="" class="img-circle" />
+													</span>
+
+													<span class="line">
+														家长
+														- 15天前
+													</span>
+
+													<span class="line desc small">
+														Thank you very much.
+													</span>
+												</a>
+											</li>
+										</ul>
+									</li>
+
+									<li class="external">
+										<a href="mailbox.html">全部信息</a>
+									</li>
+								</ul>
+
+							</li>
+
+							<!-- Task Notifications -->
+							<li class="notifications dropdown">
+
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+									<i class="entypo-list"></i>
+									<span class="badge badge-warning">1</span>
+								</a>
+
+								<ul class="dropdown-menu">
+									<li class="top">
+										<p>You have 6 pending tasks</p>
+									</li>
+
+									<li class="external">
+										<a href="#">查看全部任务</a>
+									</li>
+								</ul>
+
+							</li>
+
+						</ul>
+
+					</div>
+
+					<!-- Raw Links -->
+					<div class="col-md-6 col-sm-4 clearfix hidden-xs">
+
+						<ul class="list-inline links-list pull-right">
+
+							<!-- Language Selector -->
+							<li class="dropdown language-selector">
+
+								<ul class="dropdown-menu pull-right">
+
+								</ul>
+
+							</li>
+
+							<li>
+								<a href="javascript:logout()">
+									注销 <i class="entypo-logout right"></i>
+								</a>
+							</li>
+						</ul>
+
+					</div>
+
+				</div>
+
+				<hr />
+
+
+				<style>
+					#main {
+						position: absolute;
+						left: 0px;
+						top: 105px;
+						bottom: 0px;
+						right: 0px;
+						width: auto;
+						z-index: 2;
+						overflow: hidden;
+					}
+				</style>
+				<div id="main">
+					<!-- 最外层容器 -->
+					<iframe src="xs.html" name="iframe_ceshi" id="iframe_ceshi" frameborder="no" scrolling="auto" width="100%" height="100%"
+					 allowtransparency="true">
+
+					</iframe>
+				</div>
+			</div>
+		</div>
+		<script>
+			function logout() {
+				if (confirm("是否确定退出登录")) {
+					axios.defaults.withCredentials = true;
+					axios.get(httpUrl + 'managers/logout')
+						.then(function(result) {
+							var response = result.data;
+							if (response == 1) {
+								window.location.href = "manager-login.html";
+							}
+						})
+				}
+			}
+		</script>
+		<link rel="stylesheet" href="assets/js/jvectormap/jquery-jvectormap-1.2.2.css">
+		<link rel="stylesheet" href="assets/js/rickshaw/rickshaw.min.css">
+
+		<!-- Bottom Scripts -->
+		<script src="assets/js/gsap/main-gsap.js"></script>
+		<script src="assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>
+		<script src="assets/js/bootstrap.js"></script>
+		<script src="assets/js/joinable.js"></script>
+		<script src="assets/js/resizeable.js"></script>
+		<script src="assets/js/neon-api.js"></script>
+		<script src="assets/js/neon-custom.js"></script>
+		<!-- <script src="assets/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script> -->
+		<!-- <script src="assets/js/jvectormap/jquery-jvectormap-europe-merc-en.js"></script> -->
+		<!-- <script src="assets/js/jquery.sparkline.min.js"></script> -->
+		<!-- <script src="assets/js/rickshaw/vendor/d3.v3.js"></script> -->
+		<!-- <script src="assets/js/rickshaw/rickshaw.min.js"></script> -->
+		<!-- <script src="assets/js/raphael-min.js"></script> -->
+		<!-- <script src="assets/js/morris.min.js"></script> -->
+		<!-- <script src="assets/js/toastr.js"></script> -->
+		<!-- <script src="assets/js/neon-chat.js"></script> -->
+		<!-- <script src="assets/js/neon-demo.js"></script> -->
+
+	</body>
+</html>

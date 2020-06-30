@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhongmeng.mapper.CourseMapper">
+  <resultMap id="BaseResultMap" type="com.zhongmeng.pojo.Course">
+    <id column="courseid" jdbcType="INTEGER" property="courseid" />
+    <result column="cname" jdbcType="VARCHAR" property="cname" />
+    <result column="cdatil" jdbcType="VARCHAR" property="cdatil" />
+    <result column="cimg" jdbcType="VARCHAR" property="cimg" />
+    <result column="ctype" jdbcType="INTEGER" property="ctype" />
+    <result column="classhour" jdbcType="INTEGER" property="classhour" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    courseid, cname, cdatil, cimg, ctype, classhour, price
+  </sql>
+  <select id="selectByExample" parameterType="com.zhongmeng.pojo.CourseExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from course
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from course
+    where courseid = #{courseid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from course
+    where courseid = #{courseid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongmeng.pojo.CourseExample">
+    delete from course
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongmeng.pojo.Course">
+    insert into course (courseid, cname, cdatil, 
+      cimg, ctype, classhour, 
+      price)
+    values (#{courseid,jdbcType=INTEGER}, #{cname,jdbcType=VARCHAR}, #{cdatil,jdbcType=VARCHAR}, 
+      #{cimg,jdbcType=VARCHAR}, #{ctype,jdbcType=INTEGER}, #{classhour,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongmeng.pojo.Course">
+    insert into course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courseid != null">
+        courseid,
+      </if>
+      <if test="cname != null">
+        cname,
+      </if>
+      <if test="cdatil != null">
+        cdatil,
+      </if>
+      <if test="cimg != null">
+        cimg,
+      </if>
+      <if test="ctype != null">
+        ctype,
+      </if>
+      <if test="classhour != null">
+        classhour,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courseid != null">
+        #{courseid,jdbcType=INTEGER},
+      </if>
+      <if test="cname != null">
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="cdatil != null">
+        #{cdatil,jdbcType=VARCHAR},
+      </if>
+      <if test="cimg != null">
+        #{cimg,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null">
+        #{ctype,jdbcType=INTEGER},
+      </if>
+      <if test="classhour != null">
+        #{classhour,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongmeng.pojo.CourseExample" resultType="java.lang.Long">
+    select count(*) from course
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update course
+    <set>
+      <if test="record.courseid != null">
+        courseid = #{record.courseid,jdbcType=INTEGER},
+      </if>
+      <if test="record.cname != null">
+        cname = #{record.cname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cdatil != null">
+        cdatil = #{record.cdatil,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cimg != null">
+        cimg = #{record.cimg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ctype != null">
+        ctype = #{record.ctype,jdbcType=INTEGER},
+      </if>
+      <if test="record.classhour != null">
+        classhour = #{record.classhour,jdbcType=INTEGER},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update course
+    set courseid = #{record.courseid,jdbcType=INTEGER},
+      cname = #{record.cname,jdbcType=VARCHAR},
+      cdatil = #{record.cdatil,jdbcType=VARCHAR},
+      cimg = #{record.cimg,jdbcType=VARCHAR},
+      ctype = #{record.ctype,jdbcType=INTEGER},
+      classhour = #{record.classhour,jdbcType=INTEGER},
+      price = #{record.price,jdbcType=DECIMAL}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongmeng.pojo.Course">
+    update course
+    <set>
+      <if test="cname != null">
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="cdatil != null">
+        cdatil = #{cdatil,jdbcType=VARCHAR},
+      </if>
+      <if test="cimg != null">
+        cimg = #{cimg,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null">
+        ctype = #{ctype,jdbcType=INTEGER},
+      </if>
+      <if test="classhour != null">
+        classhour = #{classhour,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where courseid = #{courseid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongmeng.pojo.Course">
+    update course
+    set cname = #{cname,jdbcType=VARCHAR},
+      cdatil = #{cdatil,jdbcType=VARCHAR},
+      cimg = #{cimg,jdbcType=VARCHAR},
+      ctype = #{ctype,jdbcType=INTEGER},
+      classhour = #{classhour,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL}
+    where courseid = #{courseid,jdbcType=INTEGER}
+  </update>
+
+  <resultMap id="ResultMap" type="com.zhongmeng.pojo.Course">
+    <id column="courseid" jdbcType="INTEGER" property="courseid" />
+    <result column="cname" jdbcType="VARCHAR" property="cname" />
+    <result column="cdatil" jdbcType="VARCHAR" property="cdatil" />
+    <result column="cimg" jdbcType="VARCHAR" property="cimg" />
+    <result column="ctype" jdbcType="INTEGER" property="ctype" />
+    <result column="classhour" jdbcType="INTEGER" property="classhour" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <association property="category" javaType="com.zhongmeng.pojo.Category">
+      <result column="type" jdbcType="VARCHAR" property="type"/>
+    </association>
+  </resultMap>
+<select id="selectByCname" resultMap="ResultMap" parameterType="map">
+  select
+  courseid, cname, cimg, ctype, classhour, price,c.type
+  from course
+  left join category c on course.ctype = c.id
+  where cname like '%${cname}%'
+</select>
+  <select id="selectALL" resultMap="BaseResultMap" parameterType="com.zhongmeng.pojo.Course">
+    select  courseid,cname from course
+  </select>
+</mapper>

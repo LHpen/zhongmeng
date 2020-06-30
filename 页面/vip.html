@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>会员表</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<script src="vue/vue.js"></script>
+		<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="bootstrap-3.3.7/dist/css/bootstrapValidator.css">
+		<script src="jquery/jquery.min.js"></script>
+		<script src="bootstrap-3.3.7/dist/js/bootstrap.js"></script>
+		<script src="bootstrap-3.3.7/dist/js/bootstrapValidator.js" type="text/javascript" charset="utf-8"></script>
+		<script src="vue/vue-resource-1.3.4.js"></script>
+		<script src="js/context.js"></script>
+
+		<style>
+			.divdePageBtn {
+            float: right;
+        }
+
+        .pager {
+            float: right;
+        }
+		.form-control{
+			margin-bottom: 5px;
+		}
+    </style>
+
+	</head>
+	<body>
+
+		<div class="container-fluid body-content" id="app">
+			<div class="panel panel-warning">
+				<div class="panel-heading">
+					<h3 class="panel-title">会员信息表</h3>
+				</div>
+				<div class="panel-body form-inline table-responsive">
+					<label>
+						搜索会员名：
+						<input type="text" class="form-control" v-model="keywords" v-on:keyup.enter="query">
+					</label>
+					<button type="button" class="btn btn-warning btn-md" style="margin: 0px 5px 4px; " @click="query">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
+					<input type="button" value="新建" style="float: right;" class="btn btn-warning" data-toggle="modal" data-target="#modalVipAdd"
+					 @click="open()">
+				</div>
+			</div>
+
+			<table class="table table-bordered table-hover table-striped table-responsive">
+				<thead>
+					<tr>
+						<th>编号</th>
+						<th>会员名</th>
+						<th>性别</th>
+						<th>出生日期</th>
+						<th>身份证</th>
+						<th>电话</th>
+						<th>邮箱</th>
+						<th>微信</th>
+						<th>注册时间</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+
+				<tbody>
+				<tr v-for="(item,i) in arrayData" :key="i">
+					<td>{{ ((pageCurrent-1)*pagesize)+i+1 }}</td>
+						<td>{{ item.vname }}</td>
+						<td>{{ item.vsex }}</td>
+						<td>{{ item.birthday }}</td>
+						<td>{{ item.code }}</td>
+						<td>{{ item.tel }}</td>
+						<td>{{ item.email }}</td>
+						<td>{{ item.weixin }}</td>
+						<td>{{ item.vaddtime }}</td>
+						<td>
+							<input type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalBebeAdd" value="亲属"
+							 @click="loadKinsfolkAdd(item.vid,item.vname)">
+							<input type="button" name="xiugai" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalUpdate"
+							 @click="update(item.vid)" value="修改">
+							<input type="button" name="shangchu" class="btn btn-danger btn-sm" value="删除" @click="deleteItem(item.vid)">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- 分页按钮 -->
+			<div class="pager" id="pager">
+				<span class="form-inline">
+					<select class="form-control" v-model="pagesize" v-on:change="showPage(1)" number>
+						<option value="8">8</option>
+						<option value="20">20</option>
+						<option value="30">30</option>
+						<option value="40">40</option>
+					</select>
+				</span>
+				<template v-for="item in pageCount+1">
+					<span v-show="item==1" class="btn btn-default" v-on:click="showPage(1)">
+						首页
+					</span>
+					<span v-show="item==1" class="btn btn-default" v-on:click="showPage(pageCurrent-1)">
+						上一页
+					</span>
+					<span v-show="item==1" class="btn btn-default active" @click="showPage(item)">
+						{{item}}
+					</span>
+					<span v-show="item==1&&item<showPagesStart-1" class="btn btn-default disabled">
+						...
+					</span>
+					<span v-show="item>1&&item<=pageCount-1&&item>=showPagesStart&&item<=showPageEnd&&item<=pageCount" class="btn btn-default"
+					 v-on:click="showPage(item)">
+						{{item}}
+					</span>
+					<span v-show="item==pageCount&&item>showPageEnd+1" class="btn btn-default disabled">
+						...
+					</span>
+					<span v-show="item==pageCount&&pageCount!=1" class="btn btn-default" v-on:click="showPage(item)">
+						{{item}}
+					</span>
+					<span v-show="item==pageCount" class="btn btn-default" v-on:click="showPage(pageCurrent+1)">
+						下一页
+					</span>
+					<span v-show="item==pageCount" class="btn btn-default" v-on:click="showPage(pageCount)">
+						尾页
+					</span>
+				</template>
+				<span class="form-inline">
+					<input class="pageIndex form-control" style="width:60px;text-align:center" type="text" v-model.number="pageNum"
+					 v-on:keyup="showPage(pageNum)" />
+				</span>
+				<span>{{pageCurrent}}/{{pageCount}}</span>
+			</div>
+
+
+			<!-- 更新信息模态框 -->
+			<div class="modal fade" id="modalUpdate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<!-- 框头 -->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								&times;
+							</button>
+							<h4 class="modal-title" id="myModalLabel">
+								修改信息
+							</h4>
+						</div>
+
+						<div class="modal-body">
+							<!-- 框体 -->
+							<form role="form" id="update">
+								<div class="form-group">
+									<input type="hidden" name="vid" v-model="vid">
+									<label for="vname">会员名：</label>
+									<input type="text" class="form-control" id="vname" name="vname" v-model="vname" placeholder="请输入会员名">
+								</div>
+
+								<div class="form-group">
+									<label for="vsex">性别：</label>
+									<label class="radio-inline">
+										<input type="radio" value="男" id="vsex" name="vsex" v-model="vsex">男
+									</label>
+									<label class="radio-inline">
+										<input type="radio" value="女" name="vsex" v-model="vsex">女
+									</label>
+								</div>
+
+								<div class="form-group">
+									<label for="birthday">出生日期：</label>
+									<input type="date"  id="vage" class="form-control" placeholder="请输入年龄" name="birthday" v-model="birthday">
+								</div>
+
+								<div class="form-group">
+									<label for="code">身份证号：</label>
+									<input type="text" class="form-control" id="code" name="code" v-model="code" placeholder="请输入身份证号">
+								</div>
+
+								<div class="form-group">
+									<label for="tel">电话：</label>
+									<input type="text" id="tel" class="form-control" name="tel" v-model="tel" placeholder="请输入电话">
+								</div>
+
+								<div class="form-group">
+									<label for="email">邮箱：</label>
+									<input type="text" id="email" class="form-control" name="email" v-model="email" placeholder="请输入邮箱">
+								</div>
+
+								<div class="form-group">
+									<label for="weixin">微信：</label>
+									<input type="text" class="form-control" id="weixin" name="weixin" v-model="weixin" placeholder="请输入微信">
+								</div>
+
+								<div class="form-group">
+									<label for="vaddress">家庭住址：</label>
+									<textarea class="form-control" rows="3" id="vaddress" name="vaddress" v-model="vaddress" placeholder="文本输入"></textarea>
+								</div>
+
+
+							</form>
+
+						</div>
+						<div class="modal-footer">
+							<!-- 框尾 -->
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								关闭
+							</button>
+							<button type="submit" class="btn btn-warning" v-on:click="save()" id="submitButtons">
+								提交更改
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 添加会员模态框 -->
+			<div class="modal fade" id="modalVipAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<!-- 框头 -->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								&times;
+							</button>
+							<h4 class="modal-title" id="myModalLabel3">
+								添加会员
+							</h4>
+						</div>
+						<div class="modal-body">
+							<!-- 框体 -->
+
+							<form role="form" method="post" id="add">
+								<div class="form-group">
+									<label for="vname">会员名：</label>
+									<input type="text" class="form-control" id="vname1" name="vname" placeholder="请输入会员名">
+								</div>
+
+								<div class="form-group">
+									<label for="vsex1">性别：</label>
+									<label class="radio-inline">
+										<input type="radio" value="男" id="vsex1" name="vsex" checked>男
+									</label>
+									<label class="radio-inline">
+										<input type="radio" value="女" name="vsex">女
+									</label>
+								</div>
+
+								<div class="form-group">
+									<label for="birthday">出生日期：</label>
+									<input type="date"  class="form-control" placeholder="请输入年龄" name="birthday" id="birthday1">
+								</div>
+
+								<div class="form-group">
+									<label for="code">身份证号：</label>
+									<input type="text" class="form-control" name="code" placeholder="请输入身份证号" id="code1">
+								</div>
+
+								<div class="form-group">
+									<label for="tel">电话：</label>
+									<input type="text" class="form-control" name="tel" placeholder="请输入电话" id="tel1">
+								</div>
+
+								<div class="form-group">
+									<label for="email">邮箱：</label>
+									<input type="text" class="form-control" name="email" placeholder="请输入邮箱" id="email1">
+								</div>
+
+								<div class="form-group">
+									<label for="weixin1">微信：</label>
+									<input type="text" class="form-control" name="weixin" placeholder="请输入微信" id="weixin1">
+								</div>
+
+								<div class="form-group">
+									<label for="vaddress1">家庭住址：</label>
+									<textarea class="form-control" rows="3" name="vaddress" placeholder="请输入家庭地址" id="vaddress1"></textarea>
+								</div>
+
+							</form>
+
+						</div>
+						<div class="modal-footer">
+							<!-- 框尾 -->
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								关闭
+							</button>
+							<button type="submit" class="btn btn-warning" @click="add()" id="submitButtons1">
+								添加
+							</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+			<!-- 添加宝宝模态框 -->
+			<div class="modal fade" id="modalBebeAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<!-- 框头 -->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+								&times;
+							</button>
+							<h4 class="modal-title" id="myModalLabel2">
+								添加您的亲属
+							</h4>
+							<h5>
+								<p>当前操作的会员：{{ vname }}</p>
+							</h5>
+						</div>
+						<div class="modal-body">
+							<!-- 框体 -->
+							<form role="form" id="kadd">
+								
+								<div class="form-group">
+									<input type="hidden" name="vid" v-model="vid">
+									<label for="kname">亲属姓名：</label>
+									<input type="text" class="form-control" placeholder="请输入亲属姓名" id="kname" name="kname">
+								</div>
+								<div class="form-group">
+									<label for="ksex">亲属性别：</label>
+									<label class="radio-inline">
+										<input type="radio" value="男" checked id="ksex" name="ksex">男
+									</label>
+									<label class="radio-inline">
+										<input type="radio" value="女" name="ksex">女
+									</label>
+								</div>
+								<div class="form-group">
+									<label for="ktype">亲属关系：</label>
+									<input type="text" class="form-control" placeholder="请输入亲属关系" id="ktype" name="ktype">
+								</div>
+								<div class="form-group">
+									<label for="birthday">亲属出生日期：</label>
+									<input type="date" class="form-control" id="birthday" placeholder="请输入亲属出生日期" name="birthday">
+								</div>
+							</form>
+						</div>
+
+						<div class="modal-footer">
+							<!-- 框尾 -->
+							<button type="button" class="btn btn-default" data-dismiss="modal">
+								关闭
+							</button>
+							<button type="button" class="btn btn-warning" @click="addKinsfolk()">
+								添加
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<script>
+			Vue.http.options.root = httpUrl; //httpUrl在context定义
+			Vue.http.options.emulateJSON = true;
+			Vue.http.interceptors.push(function(request, next) { //拦截器
+				// 跨域携带cookie
+				request.credentials = true;
+				next();
+			})
+
+			var vm = new Vue({
+				el: '#app',
+				data: {
+					//分页数
+					pageCount: 1,
+					//当前页面
+					pageCurrent: 1,
+					//分页大小
+					pagesize: 8,
+					//显示分页按钮数
+					showPages: 10,
+					//开始显示的分页按钮
+					showPagesStart: 1,
+					//结束显示的分页按钮
+					showPageEnd: '',
+                    //输入的指定页码
+                    pageNum : 1,
+					//分页数据
+					arrayData: [],
+					keywords: '', // 搜索的关键字
+					vid: '',
+					vname: '',
+					vsex: "",
+					birthday: "",
+					tel: "",
+					code: "",
+					weixin: "",
+					vaddtime: "",
+					email: "",
+					vaddress: ""
+				},
+				created: function() {
+					this.showPage(1);
+				},
+				methods: {
+					//查询
+					query: function() {
+						this.showPage(1);
+					},
+					//分页方法
+					showPage: function(pageIndex) {
+
+						if (pageIndex > 0) {
+
+                            if (pageIndex > this.pageCount) {
+                                pageIndex = this.pageCount;
+                                this.pageCurrent = this.pageCount;
+                                this.pageNum = this.pageCount;
+                            } else {
+                                this.pageCurrent = pageIndex;
+                                this.pageNum = pageIndex;
+                            }
+							//处理分页点中样式
+                            var buttons = $("#pager").find("span");
+                            for (var i = 0; i < buttons.length; i++) {
+                                if (buttons.eq(i).html() == this.pageCurrent) {
+                                    buttons.eq(i).addClass("active");
+                                } else {
+                                    buttons.eq(i).removeClass("active");
+                                }
+                            }
+
+							this.$http.get('vip/query', {
+								params: {
+									"pageNum": pageIndex,
+									"pageSize": this.pagesize,
+									"vname": this.keywords,
+								}
+							}).then(function(result) {
+
+								var msg = result.body;
+								this.arrayData = msg.list;
+								this.pageCount = msg.pages;
+								this.showPageEnd = msg.lastPage;
+							})
+
+
+							//计算分页按钮数据
+							if (this.pageCount > this.showPages) {
+								if (pageIndex <= this.showPages / 2) { //pageIndex<=5
+									this.showPagesStart = 1;
+
+								} else if (pageIndex >= this.pageCount - (this.showPages - 3) / 2) { //pageIndex>=9
+									this.showPagesStart = this.pageCount - this.showPages + 2; //1
+
+								} else {
+									this.showPagesStart = pageIndex - (this.showPages - 3) / 2;
+
+								}
+							}
+
+						}
+
+					},
+					//加载数据
+					update: function(vid) {
+						this.$http.get('vip/update', {
+							params: {
+								"vid": vid
+							}
+						}).then(function(result) {
+							var list = result.body;
+							this.vid = list.vid;
+							this.vname = list.vname;
+							this.vsex = list.vsex;
+							this.birthday = list.birthday;
+							this.tel = list.tel;
+							this.code = list.code;
+							this.weixin = list.weixin;
+							this.vaddtime = list.vaddtime;
+							this.vaddress = list.vaddress;
+							this.email = list.email;
+						})
+
+
+					},
+					//删除数据
+					deleteItem: function(vid) {
+						if (confirm('确定要删除吗')) {
+							//console.log(index, age);
+							this.$http.get('vip/delete', {
+								params: {
+									"vid": vid
+								}
+							}).then(function(result) {
+								var msg = result.body;
+								if (msg == 1) {
+									alert("删除成功！");
+									this.showPage(this.pageCurrent);
+								} else {
+									alert("请先删除对应亲属的信息！");
+								}
+							})
+						}
+					},
+					//打开时清除输入框内容
+					open: function() {
+						if (this.keywords !== '') {
+							this.keywords = '';
+							this.showPage(this.pageCurrent);
+						}
+					},
+					//保存数据
+					save: function() {
+						//获取表单对象
+						var bootstrapValidator = $('#update').data('bootstrapValidator');
+						//手动触发验证
+						bootstrapValidator.validate();
+						if (bootstrapValidator.isValid()) {
+							//表单提交的方法、比如ajax提交
+								this.$http.post('vip/save', $('#update').serializeObject()).then(function(result) {
+									var msg = result.body;
+									if (msg == 1) {
+										alert("修改成功");
+										$('#modalUpdate').modal('hide');
+										this.showPage(this.pageCurrent);
+									} else {
+										alert("修改失败");
+									}
+								});
+						}
+					},
+					//添加数据
+					add: function() {
+						//获取表单对象
+						var bootstrapValidator = $('#add').data('bootstrapValidator');
+						//手动触发验证
+						bootstrapValidator.validate();
+						if (bootstrapValidator.isValid()) {
+							//表单提交的方法、比如ajax提交
+							this.$http.post('vip/add', $("#add").serializeObject()).then(function(result) {
+								var msg = result.body;
+								if (msg == 1) {
+									alert("添加成功");
+									this.showPage(this.pageCount);
+								} else {
+									alert("添加失败");
+								}
+							})
+						}
+					},
+					//给添加亲属加上vid
+					loadKinsfolkAdd: function(vid,vname) {
+						this.vid = vid;
+						this.vname = vname;
+					},
+					//添加亲属
+					addKinsfolk: function() {
+						this.$http.post('kinsfolk/add', $("#kadd").serializeObject()).then(function(result) {
+							var msg = result.body;
+							if (msg == 1) {
+								alert("添加成功");
+							} else {
+								alert("添加失败");
+							}
+						});
+					},
+
+				}
+
+			});
+
+			//将序列化数据格式化
+			$.fn.serializeObject = function() {
+				var o = {};
+				var a = this.serializeArray();
+				$.each(a, function() {
+					if (o[this.name] !== undefined) {
+						if (!o[this.name].push) {
+							o[this.name] = [o[this.name]];
+						}
+						o[this.name].push(this.value || '');
+					} else {
+						o[this.name] = this.value || '';
+					}
+				});
+				return o;
+			};
+
+			//表单验证
+			var from = $('#add,#update');
+			$(document).ready(function() {
+				from.bootstrapValidator({
+					// live: 'disabled',//验证时机，enabled是内容有变化就验证（默认），disabled和submitted是提交再验证
+					// excluded: [':disabled', ':hidden', ':not(:visible)'],//排除无需验证的控件，比如被禁用的或者被隐藏的
+					// submitButtons: '#btn btn-warning',//指定提交按钮，如果验证失败则变成disabled，但我没试成功，反而加了这句话非submit按钮也会提交到action指定页面
+					submitButtons: 'button[type="submit"]',
+					message: '输入值不合法',
+					feedbackIcons: {
+						valid: 'glyphicon glyphicon-ok',
+						invalid: 'glyphicon glyphicon-remove',
+						validating: 'glyphicon glyphicon-refresh',
+					},
+					fields: {
+						vname: {
+							validators: {
+								notEmpty: {
+									message: '用户名不能为空'
+								},
+								regexp: {
+									regexp: /^[\u4e00-\u9fa5]+$/,
+									message: '请输入汉字'
+								}
+							}
+						},
+						code: {
+							validators: {
+								notEmpty: {
+									message: '身份证号码不能为空！'
+								},
+								regexp: {
+									regexp: /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/,
+									message: '身份证号码格式不正确，为15位和18位身份证号码！'
+								},
+								callback: {
+									message: '身份证号码无效！',
+									callback: function(value, validator, $field) {
+										var regIdCard =
+											/^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;
+										var idCard = value;
+										if (regIdCard.test(idCard)) {
+											if (idCard.length == 18) {
+												var idCardWi = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
+												var idCardY = new Array(1, 0, 10, 9, 8, 7, 6, 5, 4, 3, 2);
+												var idCardWiSum = 0;
+												for (var i = 0; i < 17; i++) {
+													idCardWiSum += idCard.substring(i, i + 1) * idCardWi[i];
+												}
+												var idCardMod = idCardWiSum % 11;
+												var idCardLast = idCard.substring(17);
+												if (idCardMod == 2) {
+													if (idCardLast == "X" || idCardLast == "x") {
+														return true;
+													} else {
+														return false;
+													}
+												} else {
+													if (idCardLast == idCardY[idCardMod]) {
+														return true;
+													} else {
+														return false;
+													}
+												}
+											}
+										} else {
+											return false;
+										}
+									}
+								}
+							}
+						},
+						tel: {
+							validators: {
+								notEmpty: {
+									message: '手机号码不能为空！'
+								},
+								regexp: {
+									regexp: /^1[34578]\d{9}$/,
+									message: '请输入完整手机号码！'
+								}
+							}
+						},
+						email: {
+							validators: {
+								emailAddress: {
+									message: '邮箱地址格式有误！'
+								}
+							}
+						}
+
+					},
+					submitHandler: function(validator, form, submitButton) {
+						alert("submit");
+					}
+
+				});
+			});
+		</script>
+
+
+	</body>
+</html>

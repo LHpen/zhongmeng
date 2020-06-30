@@ -1,0 +1,104 @@
+/*------------------------------------------------------------------
+	[Master Stylesheet]
+
+	���ྫƷģ������ʣ�http://www.bootstrapmb.com
+	Template Name : Education Buddy Website Template
+	Version       : 1.0
+	CopyRight     : 2019 january @ www.webfulcreations.com
+
+
+	- Main CSS file is inside assets/css/theme-style.css
+-------------------------------------------------------------------*/
+
+@import 'animate.css';
+/* Including Animations CSS file */
+@import 'owl.carousel.css';
+/* Owl Carousel CSS File */
+@import 'bootstrap.min.css';
+/* Including bootstrap CSS File */
+@import 'theme-styles.css';
+/* Main Theme CSS File */
+@import 'responsive-styles.css';
+/* Main Theme CSS File */
+@import 'fontawesome-all.min.css';
+/* Including Font Awesome Icons */
+@import 'magnific-popup.css';
+/* Magnific Popup is a responsive lightbox */
+
+
+
+
+/**
+ * Import Website Main Fonts 
+ *
+ * To change Fonts Get Google Fonts replace in following Link, 
+ * AFter replacing below go to theme-style.css and update
+ * Font Families
+ *
+ */
+@import 'd6973524a6c64298a4d1c3eabb26e8f4.css" rel="stylesheet';
+
+/*=========================================
+	Below This Line You Can add Your CSS
+	Please Do not Edit Files above if you 
+	are not sure what you are doing!
+==========================================*/
+/* 轮播图 */
+.heima_banner .container-fluid {
+	padding: 0;
+}
+
+.heima_banner .container-fluid .carousel-inner .carousel-item {
+	width: 100%;
+	height: 100%;
+}
+
+.heima_banner .container-fluid .carousel-inner .carousel-item img {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+/* 二维码的位置及隐藏 */
+.heima_app {
+	position: relative;
+	display: block;
+}
+
+.heima_app img {
+	display: none;
+	width: 100px;
+	height: 100px;
+}
+
+.heima_app:hover img {
+	display: block;
+	position: absolute;
+	top: 40px;
+	border: 1px solid #ccc;
+	border-top: none;
+	margin-left: -30px;
+	z-index: 999;
+}
+
+.d-flex {
+	display: flex !important;
+}
+
+.align-items-center {
+	align-items: center !important;
+}
+
+.justify-content-center {
+	justify-content: center !important;
+}
+@media (max-width: 767px) {
+	.hidden-xs {
+		display: none !important;
+	}
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+	.hidden-md {
+		display: none !important;
+	}
+}

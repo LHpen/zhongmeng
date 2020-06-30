@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhongmeng.mapper.TeachersMapper">
+  <resultMap id="BaseResultMap" type="com.zhongmeng.pojo.Teachers">
+    <id column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="tloginname" jdbcType="VARCHAR" property="tloginname" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="tpw" jdbcType="VARCHAR" property="tpw" />
+    <result column="tname" jdbcType="VARCHAR" property="tname" />
+    <result column="ttype" jdbcType="INTEGER" property="ttype" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="weixin" jdbcType="VARCHAR" property="weixin" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="tsex" jdbcType="VARCHAR" property="tsex" />
+    <result column="timg" jdbcType="VARCHAR" property="timg" />
+    <result column="positional" jdbcType="VARCHAR" property="positional" />
+    <result column="datil" jdbcType="VARCHAR" property="datil" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    tid, tloginname, code, tpw, tname, ttype, tel, email, weixin, birthday, tsex, timg, 
+    positional, datil
+  </sql>
+  <select id="selectByExample" parameterType="com.zhongmeng.pojo.TeachersExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from teachers
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from teachers
+    where tid = #{tid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from teachers
+    where tid = #{tid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zhongmeng.pojo.TeachersExample">
+    delete from teachers
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zhongmeng.pojo.Teachers">
+    insert into teachers (tid, tloginname, code, 
+      tpw, tname, ttype, 
+      tel, email, weixin, 
+      birthday, tsex, timg, 
+      positional, datil)
+    values (#{tid,jdbcType=INTEGER}, #{tloginname,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{tpw,jdbcType=VARCHAR}, #{tname,jdbcType=VARCHAR}, #{ttype,jdbcType=INTEGER}, 
+      #{tel,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{weixin,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=DATE}, #{tsex,jdbcType=VARCHAR}, #{timg,jdbcType=VARCHAR}, 
+      #{positional,jdbcType=VARCHAR}, #{datil,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zhongmeng.pojo.Teachers">
+    insert into teachers
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="tloginname != null">
+        tloginname,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="tpw != null">
+        tpw,
+      </if>
+      <if test="tname != null">
+        tname,
+      </if>
+      <if test="ttype != null">
+        ttype,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="weixin != null">
+        weixin,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="tsex != null">
+        tsex,
+      </if>
+      <if test="timg != null">
+        timg,
+      </if>
+      <if test="positional != null">
+        positional,
+      </if>
+      <if test="datil != null">
+        datil,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tid != null">
+        #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="tloginname != null">
+        #{tloginname,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="tpw != null">
+        #{tpw,jdbcType=VARCHAR},
+      </if>
+      <if test="tname != null">
+        #{tname,jdbcType=VARCHAR},
+      </if>
+      <if test="ttype != null">
+        #{ttype,jdbcType=INTEGER},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="weixin != null">
+        #{weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="tsex != null">
+        #{tsex,jdbcType=VARCHAR},
+      </if>
+      <if test="timg != null">
+        #{timg,jdbcType=VARCHAR},
+      </if>
+      <if test="positional != null">
+        #{positional,jdbcType=VARCHAR},
+      </if>
+      <if test="datil != null">
+        #{datil,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zhongmeng.pojo.TeachersExample" resultType="java.lang.Long">
+    select count(*) from teachers
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update teachers
+    <set>
+      <if test="record.tid != null">
+        tid = #{record.tid,jdbcType=INTEGER},
+      </if>
+      <if test="record.tloginname != null">
+        tloginname = #{record.tloginname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null">
+        code = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tpw != null">
+        tpw = #{record.tpw,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tname != null">
+        tname = #{record.tname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ttype != null">
+        ttype = #{record.ttype,jdbcType=INTEGER},
+      </if>
+      <if test="record.tel != null">
+        tel = #{record.tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null">
+        email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weixin != null">
+        weixin = #{record.weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null">
+        birthday = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.tsex != null">
+        tsex = #{record.tsex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.timg != null">
+        timg = #{record.timg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.positional != null">
+        positional = #{record.positional,jdbcType=VARCHAR},
+      </if>
+      <if test="record.datil != null">
+        datil = #{record.datil,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update teachers
+    set tid = #{record.tid,jdbcType=INTEGER},
+      tloginname = #{record.tloginname,jdbcType=VARCHAR},
+      code = #{record.code,jdbcType=VARCHAR},
+      tpw = #{record.tpw,jdbcType=VARCHAR},
+      tname = #{record.tname,jdbcType=VARCHAR},
+      ttype = #{record.ttype,jdbcType=INTEGER},
+      tel = #{record.tel,jdbcType=VARCHAR},
+      email = #{record.email,jdbcType=VARCHAR},
+      weixin = #{record.weixin,jdbcType=VARCHAR},
+      birthday = #{record.birthday,jdbcType=DATE},
+      tsex = #{record.tsex,jdbcType=VARCHAR},
+      timg = #{record.timg,jdbcType=VARCHAR},
+      positional = #{record.positional,jdbcType=VARCHAR},
+      datil = #{record.datil,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zhongmeng.pojo.Teachers">
+    update teachers
+    <set>
+      <if test="tloginname != null">
+        tloginname = #{tloginname,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="tpw != null">
+        tpw = #{tpw,jdbcType=VARCHAR},
+      </if>
+      <if test="tname != null">
+        tname = #{tname,jdbcType=VARCHAR},
+      </if>
+      <if test="ttype != null">
+        ttype = #{ttype,jdbcType=INTEGER},
+      </if>
+      <if test="tel != null">
+        tel = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="weixin != null">
+        weixin = #{weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="tsex != null">
+        tsex = #{tsex,jdbcType=VARCHAR},
+      </if>
+      <if test="timg != null">
+        timg = #{timg,jdbcType=VARCHAR},
+      </if>
+      <if test="positional != null">
+        positional = #{positional,jdbcType=VARCHAR},
+      </if>
+      <if test="datil != null">
+        datil = #{datil,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zhongmeng.pojo.Teachers">
+    update teachers
+    set tloginname = #{tloginname,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      tpw = #{tpw,jdbcType=VARCHAR},
+      tname = #{tname,jdbcType=VARCHAR},
+      ttype = #{ttype,jdbcType=INTEGER},
+      tel = #{tel,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      weixin = #{weixin,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=DATE},
+      tsex = #{tsex,jdbcType=VARCHAR},
+      timg = #{timg,jdbcType=VARCHAR},
+      positional = #{positional,jdbcType=VARCHAR},
+      datil = #{datil,jdbcType=VARCHAR}
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="selectALL" resultMap="BaseResultMap" parameterType="com.zhongmeng.pojo.Teachers">
+    select tid,tname from teachers
+  </select>
+
+  <resultMap id="BaseResult" type="com.zhongmeng.pojo.Teachers">
+    <id column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="tloginname" jdbcType="VARCHAR" property="tloginname" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="tpw" jdbcType="VARCHAR" property="tpw" />
+    <result column="tname" jdbcType="VARCHAR" property="tname" />
+    <result column="ttype" jdbcType="INTEGER" property="ttype" />
+
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="weixin" jdbcType="VARCHAR" property="weixin" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="tsex" jdbcType="VARCHAR" property="tsex" />
+    <result column="timg" jdbcType="VARCHAR" property="timg" />
+    <result column="positional" jdbcType="VARCHAR" property="positional" />
+    <result column="datil" jdbcType="VARCHAR" property="datil" />
+    <association property="moreType" javaType="com.zhongmeng.pojo.more_type">
+      <id property="id" column="id" jdbcType="INTEGER"/>
+      <result property="T_id" column="T_id" jdbcType="INTEGER"/>
+      <result property="C_id" column="C_id" jdbcType="INTEGER"/>
+      <association property="category" javaType="com.zhongmeng.pojo.Category">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+      </association>
+    </association>
+  </resultMap>
+
+  <resultMap id="Base" type="com.zhongmeng.vo.TeachersVo">
+    <id column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="tloginname" jdbcType="VARCHAR" property="tloginname" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="tpw" jdbcType="VARCHAR" property="tpw" />
+    <result column="tname" jdbcType="VARCHAR" property="tname" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="weixin" jdbcType="VARCHAR" property="weixin" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="tsex" jdbcType="VARCHAR" property="tsex" />
+    <result column="timg" jdbcType="VARCHAR" property="timg" />
+    <result column="positional" jdbcType="VARCHAR" property="positional" />
+    <result column="datil" jdbcType="VARCHAR" property="datil" />
+    <collection property="ttype" ofType="com.zhongmeng.pojo.Category" >
+      <result property="id" column="id" jdbcType="INTEGER"/>
+      <result property="type" column="type" jdbcType="VARCHAR"/>
+    </collection>
+  </resultMap>
+
+  <resultMap id="selectBaseMap" type="com.zhongmeng.vo.TeachersVo">
+    <id column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="tloginname" jdbcType="VARCHAR" property="tloginname" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="tpw" jdbcType="VARCHAR" property="tpw" />
+    <result column="tname" jdbcType="VARCHAR" property="tname" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="weixin" jdbcType="VARCHAR" property="weixin" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="tsex" jdbcType="VARCHAR" property="tsex" />
+    <result column="timg" jdbcType="VARCHAR" property="timg" />
+    <result column="positional" jdbcType="VARCHAR" property="positional" />
+    <result column="datil" jdbcType="VARCHAR" property="datil" />
+    <collection property="ttype" ofType="com.zhongmeng.pojo.Category" column="tid"  select="selectByTypes">
+      <result property="id" column="id" jdbcType="INTEGER"/>
+      <result property="type" column="type" jdbcType="VARCHAR"/>
+    </collection>
+  </resultMap>
+  <select id="select" resultMap="Base" parameterType="map">
+    select tid,tname,more_type.T_id,more_type.C_id,category.id,category.type,tel,email,weixin,birthday,tsex,timg,positional,datil,code
+    from teachers,category,more_type
+    where teachers.ttype=more_type.T_id and more_type.C_id=category.id
+    <if test="tname != '' ">
+    and tname like '%${tname}%'
+    </if>
+    order by tid
+  </select>
+  <select id="selectByid" resultMap="Base" parameterType="map">
+    select tid,tname,more_type.T_id,more_type.C_id,category.id,category.type,tel,email,weixin,birthday,tsex,timg,positional,datil,code
+    from teachers,category,more_type
+    where teachers.ttype=more_type.T_id and more_type.C_id=category.id
+    <if test="tid !='' ">
+    and   tid =#{tid}
+    </if>
+
+  </select>
+  <select id="selectDescLimt" resultType="Int" parameterType="com.zhongmeng.pojo.Teachers">
+    SELECT tid
+    FROM `teachers`
+    ORDER BY tid desc limit 1
+  </select>
+
+  <select id="selectByTname" resultMap="selectBaseMap" parameterType="map">
+    select tid, tloginname, code, tpw, tname, ttype, tel, email, weixin, birthday, tsex, timg, positional
+   FROM teachers
+   WHERE ( tname like '%${tname}%' )
+    order by tid
+  </select>
+  <select id="selectByTypes" resultType="com.zhongmeng.pojo.Category" >
+     select teachers.tid,category.type
+     FROM teachers
+     LEFT JOIN more_type on teachers.tid = more_type.T_id
+     left JOIN category on more_type.C_id = category.id
+     WHERE teachers.tid = #{tid}
+      order by tid
+  </select>
+</mapper>
